@@ -1,0 +1,15 @@
+{
+	"nodes":[
+		{"id":"bca168031fc55c46","x":-18,"y":-65,"width":400,"height":400,"type":"group","label":"Front End"},
+		{"id":"e51130124b3ada86","x":-440,"y":-65,"width":400,"height":400,"type":"group","label":"Back End"},
+		{"id":"5b835a2bdc1882b8","x":0,"y":-40,"width":250,"height":60,"type":"text","text":"[[Javascript]]"},
+		{"id":"00598cf9ecf1eac4","x":85,"y":19,"width":250,"height":60,"type":"text","text":"[[React.js]] , [[]]"},
+		{"id":"2e2d15f90d490c0f","x":-406,"y":-6,"width":250,"height":60,"type":"text","text":"[[PHP]]"},
+		{"id":"0f47ab337518e077","x":-376,"y":88,"width":250,"height":60,"type":"text","text":"[[C++]]"},
+		{"id":"89da983625f3250c","x":-449,"y":-211,"width":250,"height":60,"type":"text","text":"[[Websites]]"},
+		{"id":"9732c25a1c7d683a","x":-439,"y":148,"width":250,"height":60,"type":"text","text":"[[Javascript]]"},
+		{"id":"104e23c46d022b8e","x":-381,"y":206,"width":250,"height":60,"type":"text","text":"[[Node.js]]"},
+		{"id":"b928c4ed49c3236b","x":330,"y":85,"width":250,"height":60,"type":"text","text":"Django - back end framework "}
+	],
+	"edges":[]
+}

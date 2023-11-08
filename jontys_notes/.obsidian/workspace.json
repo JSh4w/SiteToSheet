@@ -1,0 +1,187 @@
+{
+  "main": {
+    "id": "37d6ef6031bf226e",
+    "type": "split",
+    "children": [
+      {
+        "id": "38f04546160b517f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "76a5443a3c8155f7",
+            "type": "leaf",
+            "state": {
+              "type": "canvas",
+              "state": {
+                "file": "Untitled.canvas",
+                "viewState": {
+                  "x": -51.20001220703125,
+                  "y": 64.10001083374023,
+                  "zoom": 0
+                }
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "356f4ea2a049961e",
+    "type": "split",
+    "children": [
+      {
+        "id": "7c22725eda66c9fa",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3689afcc2aadfe1b",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "e2c3d1895976c372",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "fe5e56a397e405c8",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 323.5
+  },
+  "right": {
+    "id": "52e356dd129ad31e",
+    "type": "split",
+    "children": [
+      {
+        "id": "3f45282b32c88aae",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9fdb8beff2a66fc1",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Untitled.canvas",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "caa6ec188c55c595",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Untitled.canvas",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "37ac0e0b601968e3",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "a6e816e6d4873003",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Untitled.canvas"
+              }
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "3689afcc2aadfe1b",
+  "lastOpenFiles": [
+    "reaching_nirvana.canvas",
+    "Untitled.canvas",
+    "Full stack/Back End",
+    "Full stack/Front End",
+    "Goals",
+    "Full stack",
+    "Goals/Obtaining Nirvana.canvas",
+    "Full_stack/Full stack developer.canvas",
+    "Goals/Short Term Goals.md",
+    "Websites.md",
+    "Full_stack/Front end/Javascript.md",
+    "Full_stack/Back End/SQL.md",
+    "Full_stack/Back End/Python.md",
+    "Full_stack/Back End/PHP.md",
+    "Full_stack/Back End/Node.js.md",
+    "Full_stack/Back End/C++.md",
+    "Full_stack/Front end/React Native.md",
+    "Full_stack/Front end/React.md",
+    "Full_stack/Front end/HTML.md",
+    "Full_stack/Front end/Flutter.md",
+    "Full_stack/Front end/CSS.md",
+    "Goals/Long Term Goals.md",
+    "Black Friday Deals.md",
+    "Full_stack",
+    "Goals",
+    "Intention Implementation",
+    "Full_stack/Back End",
+    "Full_stack/Front end",
+    "2023-11-05.md",
+    "React.js.md",
+    "work.md",
+    "New note for work.md"
+  ]
+}

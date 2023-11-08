@@ -1,0 +1,13 @@
+{
+	"nodes":[
+		{"id":"7bd0978fb94637ba","x":-380,"y":-60,"width":400,"height":400,"type":"group","label":"Routine"},
+		{"id":"32aa8d24d5b2710b","x":-360,"y":20,"width":400,"height":400,"type":"group","label":"Home Day"},
+		{"id":"604c6c76f688f7c5","x":-230,"y":20,"width":400,"height":400,"type":"group","label":"Office Day "},
+		{"id":"564178a79c720edf","x":-80,"y":20,"width":400,"height":400,"type":"group","label":"Weymouth Day"},
+		{"id":"2478f7675ada4395","x":-380,"y":-280,"width":300,"height":180,"type":"group","label":"Goals"},
+		{"id":"236957fd4b3fce0c","x":-360,"y":-260,"width":250,"height":60,"type":"text","text":"[[Short Term Goals]]\n"},
+		{"id":"c0baa0f973d88dfa","type":"text","text":"[[Long Term Goals]]","x":-360,"y":-180,"width":250,"height":60},
+		{"id":"0250f119a0209d93","x":-80,"y":-306,"width":431,"height":252,"type":"text","text":"Habit forming\nHabit Stacking\nIntention Implementation\nOutcomes Processes Identitty\nCue .. . ... . .Reward"}
+	],
+	"edges":[]
+}
