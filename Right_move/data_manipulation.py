@@ -14,12 +14,10 @@ data_new=np.array(dat1)
 i=0
 i_2=0
 
-    
+
 for row in data_new:
     if row[2]=='Three Bedrooms':
-        i_2+=1
-        
+       i_2+=1        
     if row[2]=='Three Bedrooms' and type(row[4])==int  :
-        print(row)
-        i+=1
-
+       print(row[1])
+       i+=1
