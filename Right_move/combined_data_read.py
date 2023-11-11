@@ -7,6 +7,7 @@ x=np.array(dat1['Postcode District'])
 x=np.unique(x)
 
 
+Property_score=[]
 
 y=np.array(dat1["Bedroom Category"])
 
@@ -31,9 +32,11 @@ for i in data:
         for row in data_new:
             if row[2]=='Three Bedrooms' and type(row[4])==int and row[1]==y :
                 i2+=1
+                Property_score.append()
             if row[2]=='Three Bedrooms' and type(row[4])==int and row[1]==y2:
                 i2+=1
 
 print(i1,i2)
+
 
 
