@@ -11,7 +11,7 @@ nextMonday = nextMonday.replace(hour=9,minute=0,second=0,microsecond=0)
 print(nextMonday)
 
 start_loc = "1 lamb's passage London"
-final_loc = "Waterloo Station London"
+final_loc = "Kings Langley"
 transport_mode="bicycling"    #driving, walking, bicycling,transit , can also set transit_mode = rail,tram,train,subway,bus
 if i==0:
     dist= gmaps.distance_matrix(start_loc,final_loc,mode=transport_mode,arrival_time=nextMonday)
