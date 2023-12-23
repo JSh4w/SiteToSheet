@@ -1,6 +1,5 @@
 import numpy as np
-import math
-from tqdm import tqdm
+from math import gcd
 input=open("Advent of Code/Day_8/input.txt","r").read()
 instructions,node_data=input.split("\n\n")
 
@@ -19,9 +18,29 @@ for a in dic:
     if a[2]=="A":
         start.append(a)
         start_last.append(a[2])
-cn_all="A"
-sw=0
 
+
+
+switches=[]
+for a,x in enumerate(start):
+    current_l="A"
+    current=start[a]
+    step_count = 0
+    while current_l != "Z":
+        step_count += 1
+        current = dic[current][0 if instructions[0] == "L" else 1]
+        current_l=current[2]
+        instructions = instructions[1:] + instructions[0]
+    switches.append(step_count)
+print(switches)
+
+
+a = switches #will work for an int array of any length
+lcm = 1
+for i in a:
+    lcm = lcm*i//gcd(lcm, i)
+print(lcm)
+quit()
 while cn_all != "Z":
     for a,x in enumerate(start):
         start[a]=dic[x][0 if instructions[0]=="L" else 1]
