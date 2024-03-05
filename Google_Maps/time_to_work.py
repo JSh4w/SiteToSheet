@@ -3,7 +3,7 @@ from datetime import datetime
 from datetime import timedelta
 
 i=0
-my_key='AIzaSyBrMB9s8ZahiX3g6H5iVVvgJxCRQ21Zijg'
+my_key=''
 gmaps = googlemaps.Client(key=my_key)
 todayDate = datetime.today()
 nextMonday = todayDate + timedelta(days=-todayDate.weekday(), weeks=1)
