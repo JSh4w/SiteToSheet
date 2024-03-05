@@ -7,7 +7,6 @@ x=np.array(dat1['Postcode District'])
 x=np.unique(x)
 
 
-
 y=np.array(dat1["Bedroom Category"])
 
 data_new=np.array(dat1)
