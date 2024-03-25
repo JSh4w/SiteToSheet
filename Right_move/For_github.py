@@ -1,6 +1,11 @@
 #requests deals with extracting information from RightMove
 import requests 
 
+#all for API key
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 #Beautiful soup- https://en.wikipedia.org/wiki/Beautiful_Soup_(HTML_parser)#:~:text=Beautiful%20Soup%20is%20a%20Python,is%20useful%20for%20web%20scraping.
 # Parses HTML - taking code and extracting relevant information 
 from bs4 import BeautifulSoup
@@ -17,7 +22,7 @@ from datetime import timedelta
 
 
 
-link= "https://www.rightmove.co.uk/properties/141608720#/?channel=RES_LET"
+link= "https://www.rightmove.co.uk/properties/146078252#/?channel=RES_LET"
 
 #link = links[8]
 rightmove=link
@@ -42,7 +47,7 @@ for i in cost:
 #setting up google maps api and datetime offset
 gmaps=True
 if gmaps:
-    my_key='AIzaSyBrMB9s8ZahiX3g6H5iVVvgJxCRQ21Zijg'
+    my_key= os.getenv('GOOGLE_API_KEY')
     gmaps = googlemaps.Client(key=my_key)
 todayDate = datetime.today()
 nextMonday = todayDate + timedelta(days=-todayDate.weekday(), weeks=1)
