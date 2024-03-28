@@ -1,6 +1,7 @@
 #requests deals with extracting information from RightMove
 import requests 
 
+
 #Beautiful soup- https://en.wikipedia.org/wiki/Beautiful_Soup_(HTML_parser)#:~:text=Beautiful%20Soup%20is%20a%20Python,is%20useful%20for%20web%20scraping.
 # Parses HTML - taking code and extracting relevant information 
 from bs4 import BeautifulSoup
