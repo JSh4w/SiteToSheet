@@ -45,7 +45,8 @@ class house_hunter:
         self.headers = {
             "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",  "Accept":"text/html,application/xhtml+xml,application/xml; q=0.9,image/webp,image/apng,*/*;q=0.8"
         }
-    def single_read(self,gmaps_true):
+
+    def single_read(self,gmaps_true,transport_mode):
         res = requests.get(self.link[0], headers=self.headers)
         res.raise_for_status()
         soup = BeautifulSoup(res.text, "html.parser")
@@ -66,29 +67,18 @@ class house_hunter:
             todayDate = datetime.today()
             nextMonday = todayDate + timedelta(days=-todayDate.weekday(), weeks=1)
             nextMonday = nextMonday.replace(hour=9,minute=0,second=0,microsecond=0)
-
-        #sets limits and data sets for google_maps_iterations
-        x=0   
-        google_maps_max_it=5
-        final_loc = "Kings Langley"
-        transport_mode="transit" 
-
-        if gmaps_true:
-            dist= gmaps.distance_matrix(location,final_loc,mode=transport_mode,arrival_time=nextMonday)
-            duration_jonty=dist["rows"][0]["elements"][0]["duration"]["text"] 
-            print(f"Jonty:{duration_jonty}")
-            dist= gmaps.distance_matrix(location,"1 New St Square, London EC4A 3HQ ",mode=transport_mode,arrival_time=nextMonday)
-            duration_jovan=dist["rows"][0]["elements"][0]["duration"]["text"] 
-            print(f"Jovan:{duration_jovan}")
-
+            for key in self.journey_dict:
+                dist= gmaps.distance_matrix(location,self.journey_dict[key],mode=transport_mode,arrival_time=nextMonday)
+                duration=dist["rows"][0]["elements"][0]["duration"]["text"] 
+                print(f"{key} : {duration}")
 
     def journey_duration(self):
         for key in self.journey_dict:
             print(key,self.journey_dict[key])
 
     
-csv_1= house_hunter(12,{'Jonty':'Kings Langley','Taka':'Westminster','Jovan':'Deloitte'},'./link.txt')
-csv_1.single_read(True)
+csv_1= house_hunter(12,{'Jonty':'Kings Langley','Taka':'Westminster','Jovan':'1 New St Square, London EC4A 3HQ '},'./link.txt')
+csv_1.single_read(True,"transit")
 csv_1.journey_duration()
 
 
