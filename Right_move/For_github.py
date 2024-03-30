@@ -55,7 +55,7 @@ nextMonday = nextMonday.replace(hour=9,minute=0,second=0,microsecond=0)
 
 #sets limits and data sets for google_maps_iterations
 x=0   
-google_maps_max_it=5
+google_maps_max_it=5 
 final_loc = "Kings Langley"
 transport_mode="transit" 
 
