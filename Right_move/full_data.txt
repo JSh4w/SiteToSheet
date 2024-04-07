@@ -1,0 +1,2 @@
+{'Deposit': '£3,317', 'Price': '£2,875', 'Location': 'Beach House, Philbeach Gardens, SW5', 'Local Station': 'West Kensington', 'Work - Jonty': '1 hour 2 mins', 'Work - Taka': '24 mins', 'Work - Jovan': '39 m mins', 'Work - Jovan': '39 mins'}
+{'Deposit': None, 'Price': '£2,799', 'Location': '45-47 Daventry Street, London, NW1', 'Local Station': 'Baker Street', 'Work - Jonty': '50 mins', 'Work - Taka': '27 mins', 'Work - Jovan': '30 mins'}
