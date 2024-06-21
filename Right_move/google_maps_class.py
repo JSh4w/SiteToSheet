@@ -20,7 +20,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-#
+#duh
 import csv
 
 #Beautiful soup- https://en.wikipedia.org/wiki/Beautiful_Soup_(HTML_parser)#:~:text=Beautiful%20Soup%20is%20a%20Python,is%20useful%20for%20web%20scraping.
@@ -32,9 +32,6 @@ import re
 
 #for GOOGLE api 
 import googlemaps
-
-#for google sheets api 
-
 
 #https://docs.google.com/spreadsheets/d/1QVGoFL_3m57_HcWLyxl83aMQKKWRBVSR44EmMXUQy4I/edit#gid=0
 
@@ -52,7 +49,7 @@ from google.oauth2.service_account import Credentials
 import shelve
 
 class house_hunter:
-    '''Class covering functions of taking txt input of links, csv input of current options and outputting to CSV or command-line'''
+    '''Takes txt input of links, csv input of current options and outputting to CSV or command-line'''
     def __init__(self,person_destination : dict ,LINK : str):
         '''Google API key, dictionary of people and destinations, path to text file with links'''
         self.output_dict={}
@@ -64,10 +61,8 @@ class house_hunter:
             "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",  "Accept":"text/html,application/xhtml+xml,application/xml; q=0.9,image/webp,image/apng,*/*;q=0.8"
         }
 
-    
-    def sheet_hunter(self):
-        print("sheet_hunting")
-        """Returns a list containing: a dictionary of headers and their positions in the google sheets, a list of links taken from the document"""
+    def get_google_sheet(self):
+        """Gets google sheet document and returns as self.workbook"""
         scopes= [
             "https://www.googleapis.com/auth/spreadsheets"
         ]
@@ -75,36 +70,68 @@ class house_hunter:
         client = gspread.authorize(creds)
 
         sheet_id = os.getenv('SHEET_ID')
-        workbook = client.open_by_key(sheet_id)
+        self.workbook = client.open_by_key(sheet_id)
+        return None 
 
-        sheet= workbook.worksheet("Listings")
+    def sheet_hunter(self):
+        """Returns a list containing: a dictionary of headers and their positions in the google sheets, a list of links taken from the document"""
+        sheet=self.workbook.worksheet("Listings")
 
         headings=sheet.row_values(1)
         headings_dict={}
         for i,j in enumerate(headings):
             headings_dict[str(j)]=i+1
-        #dictionary of headings
+        
+        #google sheets headings
         self.google_sheets_heading=headings_dict
+        #all values under links
         links=sheet.col_values(headings_dict["Link"])[1:]
+
+        #create a dictionary of links associated with data
+        links_data_dict={}
+        for i,j in enumerate(links):
+            data=sheet.row_values(i+2)
+            links_data_dict[data[0]]=data[1:]
 
         #list of links
         self.google_links=links
 
-        with open("full_data.txt","rb") as f:
-            full_data = f.read().decode("UTF-8")
-        #print(full_data)
+        #create a dictionary of links associated with data
+        try:
+            self.new_data={}
+            with shelve.open('house_data', 'c', writeback=True) as shelf:
+                retrieved_data = shelf.get("all_data", {})
+                print("Data retrieved successfully:")
+                for i in links_data_dict.keys():
+                    if i not in retrieved_data.keys():
+                        retrieved_data[i]=links_data_dict[i]
+                        self.new_data[i]=links_data_dict[i]
+                shelf["all_data"]=retrieved_data
+                self.all_data=retrieved_data
+                print(self.new_data)
 
-
-        return [headings_dict,links]
+            #still need to run search on all new entries 
+        except IOError:
+            print("Database error")
     
-    def sheet_filler():
         return None
-
-
+    
+    def sheet_filler(self):
+        sheet=self.workbook.worksheet("Listings")
+        headings_dict=self.google_sheets_heading
+        links=sheet.col_values(headings_dict["Link"])[1:]
+        for i,j in enumerate(links):
+            if i in self.new_data.keys:
+                #need tuy update workbook row with corerct data in set format 
+                pass 
+        
+       
+        #need to worksheet.update_col 
+        #or worksheet.update()
+        #do this for all links base on position, maybe only do if new idk 
 
     def load_csv(self, csv_path: str):
         """loads_csv data currently present, if not present will create an excel sheet"""
-        link_data=[]
         # Check if the file exists; if not, prepare to initialize it
         initialize_file = not os.path.exists(csv_path) or os.stat(csv_path).st_size == 0
         if initialize_file:
@@ -179,10 +206,6 @@ class house_hunter:
             for key in self.journey_dict:
                 self.time_dict[key]="Empty"
 
-        #with shelve.open('full_data') as shelf:
-        #    shelf[self.link[0]] = self.output_dict
-        #    print("Data stored successfully.")
-
         with shelve.open('full_data', 'r') as shelf:
             retrieved_data = shelf[self.link[0]]
             print("Data retrieved successfully:")
@@ -203,4 +226,5 @@ class house_hunter:
 
 
 x=house_hunter({'Jonty':'Kings Langley','Taka':'Westminster','Jovan':'1 New St Square, London EC4A 3HQ '},'./link.txt')
-x.single_read(False,"transit")
+x.get_google_sheet()
+x.sheet_hunter()  

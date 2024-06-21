@@ -1,2 +1,0 @@
-pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib gspread
-pip install requests beautifulsoup4 python-dotenv regex googlemaps DateTime numpy pandas 
