@@ -11,12 +11,12 @@ class WebDataHunter:
             "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",  "Accept":"text/html,application/xhtml+xml,application/xml; q=0.9,image/webp,image/apng,*/*;q=0.8"
         } 
 
-    def link_info(self, link):
+    def link_info(self, link : str):
         """Returns a dictionary of information from the link"""
         output={}
-        self.link=open(link).readlines()
-        res = requests.get(self.link[0], headers=self.headers)
-        output["Link"]=self.link[0]
+        self.link = link
+        res = requests.get(self.link, headers=self.headers)
+        output["Link"]=self.link
         res.raise_for_status()
         soup = BeautifulSoup(res.text, "html.parser")
         just_text=soup.get_text()
@@ -30,8 +30,12 @@ class WebDataHunter:
             search_text=just_text[min_range:max_range]
             if "Deposit" in search_text:
                 Deposit=i[0]
-            elif "Price" or "pcm" in search_text:
+            else:
+                Deposit = "Unknown"
+            if "Price" or "pcm" in search_text:
                 Price=i[0]
+            else:
+                Price = "Unknown" 
         output["Deposit"]=Deposit
         output["Price"]=Price
         output["Location"]=location_text

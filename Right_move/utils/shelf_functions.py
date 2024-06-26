@@ -21,6 +21,13 @@ def get_shelf_data(path, key = 'house_data'):
         retrieved_data = shelf.get(key, {})
         shelf.close()
     return retrieved_data
+
+def print_shelf_data(path, key = 'house_data'):
+    with shelve.open(path , 'c', writeback=True) as shelf:
+        retrieved_data = shelf.get(key, {})
+        print(retrieved_data)
+        shelf.close()
+    return 
                      
 def update_shelf(path, new_data : dict ):
     """
