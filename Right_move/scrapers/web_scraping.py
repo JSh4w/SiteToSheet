@@ -13,10 +13,8 @@ class WebDataHunter:
 
     def link_info(self, link : str):
         """Returns a dictionary of information from the link"""
-        output={}
-        self.link = link
-        res = requests.get(self.link, headers=self.headers)
-        output["Link"]=self.link
+        output={"Link":link}
+        res = requests.get(link, headers=self.headers)
         res.raise_for_status()
         soup = BeautifulSoup(res.text, "html.parser")
         just_text=soup.get_text()

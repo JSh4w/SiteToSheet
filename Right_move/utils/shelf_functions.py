@@ -1,6 +1,6 @@
 import shelve
 
-def make_shelf(path):
+def make_data_shelf(path):
     """
     Creates a shelf file named 'house_data' and initializes it with an empty dictionary.
 
@@ -28,6 +28,21 @@ def print_shelf_data(path, key = 'house_data'):
         print(retrieved_data)
         shelf.close()
     return 
+
+def check_links_shelf(path, links: list):
+    with shelve.open(path, 'c', writeback=True) as shelf:
+        new_links=[]
+        previous_links = [] 
+        retrieved_data = shelf.get("house_data", {})
+        if retrieved_data is None:
+            retrieved_data = {}
+        for i in links:
+            if i not in retrieved_data.keys():
+                new_links.append(i)
+            else:
+                previous_links.append(i)
+        shelf.close()
+    return [new_links , previous_links]
                      
 def update_shelf(path, new_data : dict ):
     """
