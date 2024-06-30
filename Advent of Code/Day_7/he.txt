@@ -1,1 +1,0 @@
-print(sum([__import__("math").prod((lambda x, y : y if [[(lambda x, y, z : z.update({y : max(z[y], int(x))}))(*(z.split()), y) for z in a.split(",")] for a in x.split(":")[1].split(";")] else {})(x, {"red" : 0, "green" : 0, "blue" : 0}).values()) for x in open("inputs/2.txt").readlines()]))
