@@ -8,7 +8,11 @@ from scrapers.web_scraping import WebDataHunter
 from utils.shelf_functions import *
 
 
-def main(gmaps_on : bool, gs_merge : bool, storage_dir):
+def main(
+    gmaps_on : bool,
+    gs_merge : bool,
+    storage_dir : pathlib.Path
+    ):
 
     #get maps api key
     google_maps_api_key = os.getenv('GOOGLE_API_KEY') 
