@@ -10,7 +10,10 @@ def get_config_dir():
 
 CONFIG_DIR = get_config_dir()
 ENV_FILE = CONFIG_DIR / '.env'
-CREDENTIALS_FILE = CONFIG_DIR / 'sheet_credentials.json'
+CREDENTIALS_FILE = CONFIG_DIR / 'sheets_credentials.json'
+
+assert ENV_FILE.exists()
+assert CREDENTIALS_FILE.exists()
 
 def load_configuration():
     if not CONFIG_DIR.exists():
