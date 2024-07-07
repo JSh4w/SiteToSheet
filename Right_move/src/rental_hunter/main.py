@@ -6,7 +6,7 @@ from api_clients.google_maps_client import GoogleMapsClient
 from api_clients.google_sheets_client import GoogleSheetsClient
 from scrapers.web_scraping import WebDataHunter
 from utils.shelf_functions import *
-
+from config import (ENV_FILE, CREDENTIALS_FILE)
 
 def main(
     gmaps_on : bool,
@@ -14,13 +14,20 @@ def main(
     storage_dir : pathlib.Path
     ):
 
+    x= pathlib.Path(os.getenv('LOCALAPPDATA')) / 'rental_hunter' / 'sheets_credentials.json'
+    if x.exists():
+        print("hello")
+    
+
+    #get and set api, keys 
     #get maps api key
     google_maps_api_key = os.getenv('GOOGLE_API_KEY') 
-    #get google sheets id
+    #get google sheets ids
     googe_sheets_id=os.getenv('SHEET_ID')
+    print(googe_sheets_id)
 
     #cerate gsheets instance
-    gsheets_instance = GoogleSheetsClient(sheet_id=googe_sheets_id, path_to_json_cred="sheets_credentials.json")
+    gsheets_instance = GoogleSheetsClient(sheet_id=googe_sheets_id, path_to_json_cred=r"C:\Users\jonty\AppData\Local\rental_hunter\sheets_credentials.json")
     #this gets the workbook and makes the API call
     gsheets_instance.retrieve_google_sheet()
     #set headers and tenant info
