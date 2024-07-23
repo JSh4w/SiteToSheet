@@ -17,21 +17,21 @@ class GoogleSheetsClient:
         self.sheet_id = sheet_id 
         self.sheet_idscopes= [
             "https://www.googleapis.com/auth/spreadsheets"
-        ]
+        ] 
         self.creds  = Credentials.from_service_account_file(path_to_json_cred, scopes=self.sheet_idscopes)
 
 
         self._gs_headers = None
-        self._tenant_info = None
+        self._destination_info = None
         self.gs_headers = None 
-        self.tenant_info = None 
+        self.destination_info = None 
         return None 
     
     def retrieve_google_sheet(self):
         """Gets google sheet document and returns as self.workbook"""
         client = gspread.authorize(self.creds)
         workbook = client.open_by_key(self.sheet_id)
-        self.listing_sheet= workbook.worksheet("Listings")
+        self.links_sheet= workbook.worksheet("Data")
 
         return workbook
     @property
@@ -43,12 +43,12 @@ class GoogleSheetsClient:
         self._gs_headers=gs_headers 
     
     @property
-    def tenant_info(self):
-        return self._tenant_info
+    def destination_info(self):
+        return self._destination_info
     
-    @tenant_info.setter
-    def tenant_info(self, tenant_info):
-        self._tenant_info=tenant_info
+    @destination_info.setter
+    def destination_info(self, destination_info):
+        self._destination_info=destination_info
     
     def extract_headers(self) -> dict:
         """
@@ -61,7 +61,7 @@ class GoogleSheetsClient:
         Returns:
             dict: A dictionary containing the headers data.
         """
-        sheet=self.listing_sheet
+        sheet=self.links_sheet
         headings=sheet.row_values(1)
         headings_dict={}
         for i,j in enumerate(headings):
@@ -69,7 +69,7 @@ class GoogleSheetsClient:
         self.gs_headers=headings_dict
         return headings_dict
 
-    def extract_tenant_info(self, workbook = None) -> dict:
+    def extract_destination_info(self, workbook = None) -> dict:
         """
     
         """
@@ -77,15 +77,14 @@ class GoogleSheetsClient:
             client = gspread.authorize(self.creds)
             workbook = client.open_by_key(self.sheet_id)
         sheet=workbook.worksheet("Info")
-        names = sheet.col_values(1)[1:]
-        location = sheet.col_values(2)[1:]
-        address = sheet.col_values(3)[1:]
-        tenant_info = {}
-        for i in names:
-            tenant_info[i] = [location[names.index(i)], address[names.index(i)]]
-        self.tenant_info = tenant_info
+        title = sheet.col_values(1)[1:]
+        address = sheet.col_values(2)[1:]
+        location_info = {}
+        for i in title:
+            location_info[str(i).strip()] = address[title.index(i)]
+        self.destination_info = location_info
 
-        return self.tenant_info
+        return self.destination_info
     
     def extract_links(self) -> dict:
         """
@@ -98,12 +97,12 @@ class GoogleSheetsClient:
         Returns:
             dict: A dictionary containing the headers and links data.
         """
-        sheet= self.listing_sheet
+        sheet= self.links_sheet
         #all values under links
         links=sheet.col_values(self.gs_headers["Link"])[1:]
         return links
 
-    def get_listings_info(self) -> dict:
+    def get_links_info(self) -> dict:
         """
         Retrieves the headers and links data from the provided workbook.
 
@@ -114,7 +113,7 @@ class GoogleSheetsClient:
         Returns:
             dict: A dictionary containing the headers and links data.
         """
-        sheet= self.listing_sheet
+        sheet= self.links_sheet
         #all values under links
         links=sheet.col_values(self.gs_headers["Link"])[1:]
 
@@ -131,7 +130,7 @@ class GoogleSheetsClient:
 
         return [links,links_data_dict]
 
-    def update_listing_info(self, web_info) -> None:
+    def update_links_info(self, web_info) -> None:
         """
         Updates the listing info in the provided workbook.
 
@@ -142,11 +141,14 @@ class GoogleSheetsClient:
         Returns:
             None
         """
-        sheet=self.listing_sheet
+        sheet=self.links_sheet
         links= sheet.col_values(self.gs_headers["Link"])[1:]
+        print(links)
+        print(web_info["Link"])
         if web_info["Link"] in links:
             index = links.index(web_info["Link"])
             for i in web_info:
+                print(i)
                 sheet.update_cell(index+2, self.gs_headers[i], web_info[i])
 
 
