@@ -69,7 +69,7 @@ def load_configuration():
     
     # You could return a configuration object here if needed
     return {var: os.getenv(var) for var in required_vars}
-
+  
 # Load the configuration when this module is imported
 config = load_configuration()
 

@@ -1,10 +1,10 @@
 import shelve
 
-def make_data_shelf(path):
+def make_data_shelf(path, key = 'link_data'):
     """
-    Creates a shelf file named 'house_data' and initializes it with an empty dictionary.
+    Creates a shelf file named 'link_data' and initializes it with an empty dictionary.
 
-    This function uses the `shelve` module to open a shelf file named 'house_data' in create mode ('c'). The shelf file is then populated with an empty dictionary under the key 'all_data'. Finally, the shelf file is closed.
+    This function uses the `shelve` module to open a shelf file named 'link_data' in create mode ('c'). The shelf file is then populated with an empty dictionary under the key 'all_data'. Finally, the shelf file is closed.
 
     Parameters:
     None
@@ -13,27 +13,27 @@ def make_data_shelf(path):
     None
     """
     with shelve.open(path, 'c', writeback=True) as shelf:
-        shelf['house_data'] = {}
+        shelf[key] = {}
         shelf.close()
 
-def get_shelf_data(path, key = 'house_data'):
+def get_shelf_data(path, key = 'link_data'):
     with shelve.open(path , 'c', writeback=True) as shelf:
         retrieved_data = shelf.get(key, {})
         shelf.close()
     return retrieved_data
 
-def print_shelf_data(path, key = 'house_data'):
+def print_shelf_data(path, key = 'link_data'):
     with shelve.open(path , 'c', writeback=True) as shelf:
         retrieved_data = shelf.get(key, {})
         print(retrieved_data)
         shelf.close()
     return 
 
-def check_links_shelf(path, links: list):
+def check_links_shelf(path, links: list, key = 'link_data') -> list:
     with shelve.open(path, 'c', writeback=True) as shelf:
         new_links=[]
         previous_links = [] 
-        retrieved_data = shelf.get("house_data", {})
+        retrieved_data = shelf.get(key, {})
         if retrieved_data is None:
             retrieved_data = {}
         for i in links:
@@ -44,9 +44,9 @@ def check_links_shelf(path, links: list):
         shelf.close()
     return [new_links , previous_links]
                      
-def update_shelf(path, new_data : dict ):
+def update_shelf(path, new_data : dict, key = 'link_data'):
     """
-    Updates the 'house_data' shelf with the new data provided in the 'new_data' dictionary.
+    Updates the 'link_data' shelf with the new data provided in the 'new_data' dictionary.
     
     Args:
         new_data (dict): A dictionary containing the new data to be added to the shelf.
@@ -56,14 +56,14 @@ def update_shelf(path, new_data : dict ):
         Keys are links and values are lists of data for each link.
     """
     with shelve.open(path, 'c', writeback=True) as shelf:
-        retrieved_data = shelf.get("house_data", {})
+        retrieved_data = shelf.get(key, {})
         if retrieved_data is None:
             retrieved_data = {}
         added_data = {}
         for i in new_data.keys():
             if i not in retrieved_data.keys():
                 added_data[i] = new_data[i]
-        shelf['house_data'] = {**retrieved_data, **added_data}
+        shelf[key] = {**retrieved_data, **added_data}
         shelf.close()
     return added_data
 
@@ -77,7 +77,7 @@ def clear_shelf(path):
 
 def update_auxilliary_shelf(path, new_data : dict ):
     """
-    Updates the 'house_data' shelf with the new data provided in the 'new_data' dictionary.
+    Updates the 'link_data' shelf with the new data provided in the 'new_data' dictionary.
     
     Args:
         new_data (dict): A dictionary containing the new data to be added to the shelf.
