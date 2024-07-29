@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from dotenv import load_dotenv
+from dotenv import load_dotenv, set_key
 import json
 
 def get_config_dir():
@@ -15,16 +15,15 @@ CREDENTIALS_FILE = CONFIG_DIR / 'sheets_credentials.json'
 
 def create_template_env():
     template = """
-# SiteToSheet config
-#Google API key
-GOOGLE_API_KEY="your_google_api_key"
-
-#Google sheets ID- this can be taken from online  
-SHEET_ID="your_sheet_id"
-
-    """
+GOOGLE_API_KEY=
+SHEET_ID=
+"""
     with open(ENV_FILE, 'w') as f:
         f.write(template.strip())
+
+def update_env_config(path: Path, key: str, value: str):
+    set_key(dotenv_path=ENV_FILE or path, key=key, value=value)
+    load_dotenv(ENV_FILE, override=True)
 
 def create_template_credentials():
     template = {
@@ -66,12 +65,6 @@ def load_configuration():
     if missing_vars:
         print(f"Warning: The following required environment variables are not set: {', '.join(missing_vars)}")
         print(f"Please edit the .env file at {ENV_FILE} and add these variables.")
-    
-    # You could return a configuration object here if needed
+
     return {var: os.getenv(var) for var in required_vars}
   
-# Load the configuration when this module is imported
-config = load_configuration()
-
-# Export the configuration and other necessary items
-__all__ = ['config', 'CONFIG_DIR', 'ENV_FILE', 'CREDENTIALS_FILE']

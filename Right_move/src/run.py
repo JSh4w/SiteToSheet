@@ -3,8 +3,9 @@
 import argparse
 import sys
 import pathlib
-from SiteToSheet.config import config, load_configuration, CREDENTIALS_FILE
-from SiteToSheet.main import site_to_sheet
+from SiteToSheet.config import load_configuration, CREDENTIALS_FILE, update_env_config
+#from SiteToSheet.main import site_to_sheet
+from SiteToSheet.main_class import SiteToSheetProcessor
 from SiteToSheet.utils.shelf_functions import clear_shelf, print_shelf_data
 def parse_arguments():
     parser = argparse.ArgumentParser()
@@ -14,29 +15,33 @@ def parse_arguments():
     parser.add_argument('--gs_merge','-gs_m', action='store_true', help='Updates all links in the sheet')
     parser.add_argument('--update_config','-uc', action='store_true', help='Update config file')
     parser.add_argument('--update_sheet_id','-us', type=str, help='Update sheet id')
-    return parser.parse_args()
 
-def update_config():
-    print("Updating config...")
-    config = load_configuration()
-    print(f"Config updated: {config}")
+    # Add arguments for setting configuration values
+    parser.add_argument("--set-google-api-key", type=str, help="Set Google API Key")
+    parser.add_argument("--set-sheet-id", type=str, help="Set Google Sheet ID")
+    return parser.parse_args()
 
 def main():
     args = parse_arguments()
 
-    if args.update_config:
-        update_config()
-        exit()
-    if args.update_sheet_id:
-        #TODO create function to update config 
-        config['SHEET_ID'] = args.update_sheet_id
-        update_config()
-        exit()
+    config = load_configuration()
+
+    if args.set_google_api_key:
+        update_env_config(key="GOOGLE_API_KEY", value=args.set_google_api_key)
+    if args.set_sheet_id:
+        update_env_config(key="SHEET_ID", value=args.set_sheet_id)
+
+    # Check for missing configuration
+    #if not config.google_api_key or not config.sheet_id:
+    #    print("Error: Missing configuration. Please set the following:")
+    #    if not config.google_api_key:
+    #        print("- Google API Key (use --set-google-api-key)")
+    #    if not config.sheet_id:
+    #        print("- Sheet ID (use --set-sheet-id)")
+    #    return  # 
 
     #set current directory 
     base_dir= pathlib.Path.cwd()
-    #set storage directry for local data
-    #TODO update to more local area for running package 
     storage_dir = base_dir / 'local_storage' / 'link_data'
 
     if args.remove_shelf:
@@ -49,11 +54,11 @@ def main():
         print_shelf_data(storage_dir, 'auxilliary')   
         exit()  
     
-    #try:
-    site_to_sheet(args.gmaps, args.gs_merge, storage_directory=storage_dir, credentials_filepath=CREDENTIALS_FILE)
-    #except Exception as e:
-    #    print(f"An error occurred: {e}", file=sys.stderr)
-    #    sys.exit(1)
-  
+    site_to_sheet = SiteToSheetProcessor(storage_directory=storage_dir, credentials_filepath=CREDENTIALS_FILE)
+    site_to_sheet.initialize_clients()
+    site_to_sheet.update_headers_and_destination_info(force_update=args.update_sheet_id)
+    site_to_sheet.get_links()
+    site_to_sheet.process_links_update_sheet(enable_google_maps=args.gmaps, force_link_process=args.gs_merge)
+
 if __name__ == '__main__':
     main()
