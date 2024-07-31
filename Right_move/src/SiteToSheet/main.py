@@ -1,4 +1,4 @@
-import os 
+import os
 import pathlib
 import itertools
 
@@ -7,67 +7,55 @@ from .api_clients.google_sheets_client import GoogleSheetsClient
 from .scrapers.web_scraping import WebDataHunter
 from .utils.shelf_functions import *
 
-def site_to_sheet(
-    enable_google_maps : bool,
-    format_and_destination_update: bool,
-    force_link_process : bool,
-    sync_local_data : bool,
-    storage_directory : pathlib.Path,
-    credentials_filepath : pathlib.Path
-    ):
+class SiteToSheetProcessor:
+    def __init__(self, storage_directory: pathlib.Path, credentials_filepath: pathlib.Path):
+        self.storage_directory = storage_directory
+        self.credentials_filepath = credentials_filepath
+        self.gsheets_instance = None
+        self.gmaps_instance = None
+        self.google_maps_api_key = os.getenv('GOOGLE_API_KEY') 
+        self.google_sheets_id = os.getenv('SHEET_ID') 
+        assert self.google_maps_api_key is not None, "Please set the GOOGLE_API_KEY environment variable"
+        assert self.google_sheets_id is not None, "Please set the SHEET_ID environment variable"
+    def initialize_clients(self, sheet_id = None , path_to_json_cred = None):
+        if sheet_id is None:
+            sheet_id = self.google_sheets_id
+        if path_to_json_cred is None:
+            path_to_json_cred = self.credentials_filepath
+        self.gsheets_instance = GoogleSheetsClient(sheet_id=sheet_id, path_to_json_cred=path_to_json_cred)
+        self.gsheets_instance.retrieve_google_sheet()
+        return None 
 
-    #get and set api, keys 
-    #get maps api key
-    google_maps_api_key = os.getenv('GOOGLE_API_KEY') 
-    #get google sheets ids
-    google_sheets_id=os.getenv('SHEET_ID')
-
-    #TODO retrieve google sheet should take the sheet id  
-    gsheets_instance = GoogleSheetsClient(sheet_id=google_sheets_id, path_to_json_cred=credentials_filepath)
-    #this gets the workbook and makes the API call
-    gsheets_instance.retrieve_google_sheet()
-
-    #handle google sheets formatting 
-    if format_and_destination_update:
-            gsheets_instance.gs_headers = gsheets_instance.extract_headers()
-            gsheets_instance.destination_info = gsheets_instance.extract_destination_info()
-    else:
-        try:
-            gsheets_instance.gs_headers = get_shelf_data(storage_directory, "auxilliary")['headers']
-            gsheets_instance.destination_info = get_shelf_data(storage_directory, "auxilliary")['Info']
-        except KeyError:
-            gsheets_instance.gs_headers = gsheets_instance.extract_headers()
-            gsheets_instance.destination_info = gsheets_instance.extract_destination_info()
-    update_auxilliary_shelf(storage_directory,{"Headers":gsheets_instance.gs_headers})
-    update_auxilliary_shelf(storage_directory,{"Info":gsheets_instance.destination_info})
-
-    #get links to search
-    print(list(gsheets_instance.gs_headers.keys())[0])
-    links_to_search, previous_links = check_links_shelf(storage_directory, gsheets_instance.extract_links())
-    print(f"Data to search and add to sheets \n {links_to_search}")
-
-    #### Now all updated info is in the shelf or in links_to_search ####
+    def update_headers_and_destination_info(self, force_update: bool):
+        if force_update:
+                self.gsheets_instance.gs_headers = self.gsheets_instance.extract_headers()
+                self.gsheets_instance.destination_info = self.gsheets_instance.extract_destination_info()
+        else:
+            try:
+                self.gsheets_instance.gs_headers = get_shelf_data(self.storage_directory, "auxilliary")['headers']
+                self.gsheets_instance.destination_info = get_shelf_data(self.storage_directory, "auxilliary")['Info']
+            except KeyError:
+                self.gsheets_instance.gs_headers = self.gsheets_instance.extract_headers()
+                self.gsheets_instance.destination_info = self.gsheets_instance.extract_destination_info()
+        update_auxilliary_shelf(self.storage_directory,{"Headers":self.gsheets_instance.gs_headers})
+        update_auxilliary_shelf(self.storage_directory,{"Info":self.gsheets_instance.destination_info})
+        return None 
     
-    #fill in shelf data and update google sheets
-    if enable_google_maps and ((links_to_search is not None) or force_link_process):
-        #set limit for data to search to not overload API's requests
-        ### ADD OVERRIDE / EXPONENTIAL BACKOFF ### 
-        set_limit = 10
-        #start class instance
-        gmaps_instance = GoogleMapsClient(api_key=str(google_maps_api_key))
-        headers = get_shelf_data(storage_directory, "auxilliary")['headers']
-        destination_info = get_shelf_data(storage_directory, "auxilliary")['Info']
+    def get_links(self):
+        print(list(self.gsheets_instance.gs_headers.keys())[0])
+        self.all_links = self.gsheets_instance.extract_links()
+        self.links_to_search, self.stored_links = check_links_shelf(self.storage_directory, self.all_links)
+        print(f"Data to search and add to sheets \n {self.links_to_search}")
+ 
+    def process_links_update_sheet(self, enable_google_maps: bool, force_link_process: bool):
+        if enable_google_maps and ((self.links_to_search is not None) or force_link_process):
+            #TODO implement improved API limiting 
+            self.gmaps_instance = GoogleMapsClient(api_key=self.google_maps_api_key)
+            headers = get_shelf_data(self.storage_directory, "auxilliary")['H eaders']
+            destination_info = get_shelf_data(self.storage_directory, "auxilliary")['Info']
 
-        #if deleted info / can check if searched before or not 
-        ### NOT FULLY TESTED ### 
-        if sync_local_data:
-            all_shelfed_data = get_shelf_data(storage_directory)
-            for i in itertools.islice(previous_links, set_limit):
-                if i in all_shelfed_data:
-                    gs_update_info = all_shelfed_data[i]
-                gsheets_instance.update_links_info(gs_update_info)
-
-        for i in itertools.islice(links_to_search, set_limit):
+            set_limit = 10
+            for i in itertools.islice(self.links_to_search, set_limit):
                 web_instance = WebDataHunter()
                 link = i
                 #compares with googlesheets to only search if destination info in the headers
@@ -79,24 +67,27 @@ def site_to_sheet(
                             matches.append(i)
                         else:
                             destination_matches.append(i)
-                
-                #try:
                 web_info = web_instance.link_info(link, matches)
-                #except Exception as e:
-                #    print(e)
-                #    print("link not found, backed out of data search")
-                #    continue    
+
                 start = web_info['Location']
-                gmaps_instance.set_start(start)
+                self.gmaps_instance.set_start(start)
                 #compares with googlesheets to only search if tenant info in the headers
                 for i in destination_matches:
                     destination = destination_info[i]
                     print(destination)
-                    time_to_destination = gmaps_instance.time_to_destination(destination)
+                    time_to_destination = self.gmaps_instance.time_to_destination(destination)
                     web_info[i] = time_to_destination
-                gsheets_instance.update_links_info(web_info)  
 
+                self.gsheets_instance.update_links_info(web_info)  
+                update_shelf(self.storage_directory, {link: web_info})
 
-                update_shelf(storage_directory, {link: web_info})
-
+    
+    def sync_sheets_with_local_data(self, sync_local_data: bool):
+        if sync_local_data:
+            set_limit = 10 
+            all_shelfed_data = get_shelf_data(self.storage_directory)
+            for i in itertools.islice(self.stored_links, set_limit):
+                if i in all_shelfed_data:
+                    gs_update_info = all_shelfed_data[i]
+                self.gsheets_instance.update_links_info(gs_update_info)
 

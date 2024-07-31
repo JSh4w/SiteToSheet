@@ -5,7 +5,7 @@ import sys
 import pathlib
 from SiteToSheet.config import load_configuration, CREDENTIALS_FILE, update_env_config
 #from SiteToSheet.main import site_to_sheet
-from SiteToSheet.main_class import SiteToSheetProcessor
+from SiteToSheet.main import SiteToSheetProcessor
 from SiteToSheet.utils.shelf_functions import clear_shelf, print_shelf_data
 def parse_arguments():
     parser = argparse.ArgumentParser()
