@@ -1,7 +1,7 @@
-/Right_move/.env
-/Right_move/sheets_credentials.json
-/Right_move/house_hunter/
-/Right_move/local_storage/house_data.bak
-/Right_move/local_storage/house_data.dat
-/Right_move/local_storage/house_data.dir
-/Right_move/test/ 
+/SiteToSheet/.env
+/SiteToSheet/sheets_credentials.json
+/SiteToSheet/house_hunter/
+/SiteToSheet/local_storage/house_data.bak
+/SiteToSheet/local_storage/house_data.dat
+/SiteToSheet/local_storage/house_data.dir
+/SiteToSheet/test/ 
