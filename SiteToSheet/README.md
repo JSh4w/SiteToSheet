@@ -1,5 +1,56 @@
+# SiteToSheet
 
-## Licensing
+SiteToSheet is a Python project that combines web scraping, natural language processing, and Google API integration to extract data from websites and store it in Google Sheets.
+
+## Installation
+
+This project requires Python 3.7 or later. To set up the project environment:
+
+1. Clone the repository:
+2. Create a virtual environment:
+3. Activate the virtual environment:
+- On Windows:
+  ```
+  venv\Scripts\activate
+  ```
+- On macOS and Linux:
+  ```
+  source venv/bin/activate
+  ```
+
+4. Install the required packages:
+## Dependencies
+
+This project relies on several key libraries:
+
+- **Web Scraping**: BeautifulSoup4
+- **Natural Language Processing**: spaCy (with en_core_web_sm model)
+- **Google API Integration**: google-api-python-client, gspread
+- **Data Manipulation**: pandas, numpy
+- **Mapping**: googlemaps
+- **Environment Management**: python-dotenv
+- **Rate Limiting**: ratelimit
+
+For a complete list of dependencies, see the `requirements.txt` file.
+
+## Configuration
+
+1. Set up Google Cloud Project and enable necessary APIs (Sheets, Maps).
+2. Create and download a `credentials.json` file for Google API authentication.
+3. Create a `.env` file in the project root and add your API keys:
+## Usage
+
+[Provide basic usage instructions here]
+
+## Features
+
+- Web scraping with BeautifulSoup4
+- Natural language processing with spaCy
+- Google Sheets integration for data storage
+- Google Maps API for geolocation services
+- Rate limiting to respect API usage limits
+
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
@@ -10,3 +61,7 @@ This project uses the following third-party services and libraries:
 - spaCy: Licensed under the [MIT License](https://github.com/explosion/spaCy/blob/master/LICENSE)
 
 Users of this software are responsible for ensuring their own compliance with the terms of these services and libraries.
+
+## Acknowledgments
+
+This project makes use of several open-source libraries and APIs. We thank the maintainers and contributors of these projects.
