@@ -54,8 +54,7 @@ class SiteToSheetProcessor:
             headers = get_shelf_data(self.storage_directory, "auxilliary")['H eaders']
             destination_info = get_shelf_data(self.storage_directory, "auxilliary")['Info']
 
-            set_limit = 10
-            for i in itertools.islice(self.links_to_search, set_limit):
+            for i in self.links_to_search:
                 web_instance = WebDataHunter()
                 link = i
                 #compares with googlesheets to only search if destination info in the headers
@@ -67,7 +66,7 @@ class SiteToSheetProcessor:
                             matches.append(i)
                         else:
                             destination_matches.append(i)
-                web_info = web_instance.link_info(link, matches)
+                web_info = web_instance.obtain_all_link_info(link, matches)
 
                 start = web_info['Location']
                 self.gmaps_instance.set_start(start)

@@ -1,9 +1,12 @@
 import re
 import spacy
 import requests
+import time 
+from functools import wraps 
 from bs4 import BeautifulSoup
-
-
+from ratelimit import limits, sleep_and_retry
+from urllib import robotparser
+from urllib.parse import urlparse
 
 class WebDataHunter:
         
@@ -29,6 +32,37 @@ class WebDataHunter:
         except re.error:
             # If it fails to compile, it's definitely not a valid regex
             return False
+        
+    @staticmethod
+    def daily_limit(max_daily):
+        def decorator(func):
+            func.daily_count = 0
+            func.last_reset = time.time()
+
+            @wraps(func)
+            def wrapper(*args, **kwargs):
+                current_time = time.time()
+                if current_time - func.last_reset >= 86400:  # 24 hours in seconds
+                    func.daily_count = 0
+                    func.last_reset = current_time
+
+                if func.daily_count >= max_daily:
+                    raise Exception("Daily limit of 20 requests exceeded")
+
+                func.daily_count += 1
+                return func(*args, **kwargs)
+            return wrapper
+        return decorator
+    
+    @staticmethod 
+    def can_fetch(url):
+        rp = robotparser.RobotFileParser()
+        parsed_uri = urlparse(url)
+        domain = f"{parsed_uri.scheme}://{parsed_uri.netloc}"
+        rp.set_url(f"{domain}/robots.txt")
+        rp.read()
+        return rp.can_fetch("*", url)
+
     
     def single_match_search(self, text, match):
         if "(£)" in match:
@@ -69,20 +103,26 @@ class WebDataHunter:
             
         #return successful_match
 
-
-        
-
-    def link_info(self, link : str, search_list : list) -> dict:
+    @sleep_and_retry
+    @limits(calls=2, period=2)
+    @daily_limit(max_daily=20)
+    def obtain_all_link_info(self, url : str, search_list : list) -> dict:
         """Returns a dictionary of information from the link"""
         output={}
-        res = requests.get(link, headers=self.headers)
+        if self.can_fetch(url):
+            res = requests.get(url, headers=self.headers)
+        else:
+            raise Exception("Robot.txt disallows access to this link")
         res.raise_for_status()
         soup = BeautifulSoup(res.text, "html.parser")
         just_text=soup.get_text()
 
         for i in search_list:
             output[str(i)]=self.single_match_search(just_text, i)
-        output['Link']=link
+        output['Link']=url
 
         return output 
+    
+    
+
 
