@@ -51,7 +51,7 @@ class SiteToSheetProcessor:
         if enable_google_maps and ((self.links_to_search is not None) or force_link_process):
             #TODO implement improved API limiting 
             self.gmaps_instance = GoogleMapsClient(api_key=self.google_maps_api_key)
-            headers = get_shelf_data(self.storage_directory, "auxilliary")['Headers']
+            headers = get_shelf_data(self.storage_directory, "auxilliary")['H eaders']
             destination_info = get_shelf_data(self.storage_directory, "auxilliary")['Info']
 
             set_limit = 10
