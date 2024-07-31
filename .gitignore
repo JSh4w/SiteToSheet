@@ -1,6 +1,6 @@
 /SiteToSheet/.env
 /SiteToSheet/sheets_credentials.json
-/SiteToSheet/virtual_env/
+/SiteToSheet/venv/
 /SiteToSheet/local_storage/house_data.bak
 /SiteToSheet/local_storage/house_data.dat
 /SiteToSheet/local_storage/house_data.dir
