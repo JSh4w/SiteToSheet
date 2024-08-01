@@ -40,7 +40,7 @@ For a complete list of dependencies, see the `requirements.txt` file.
 3. Create a `.env` file in the project root and add your API keys:
 ## Usage
 
-[Provide basic usage instructions here]
+An example on how to use the tool will be provided on my portfolio website. For now you just have to ask :)
 
 ## Features
 
