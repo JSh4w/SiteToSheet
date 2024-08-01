@@ -1,9 +1,5 @@
-# git_coding
+Welcome to SiteToSheet, the primary README can be found here:
+[SiteToSheet README](./SiteToSheet/README.md)
 
-Google_Maps: testing distance matrix api 
-jontys_notes: a backup of obsidian notes, copied into the repository every now and then
-Right_move: software regarding data anlaysis of desirable rent properties across london 
-
--All current coding towards git, 
--all projects are in seperate files
-- the naming convention isn't amazing
+Brief: SiteToSheet was designed to assist web scraping capabilities with different tools. In the future, I want to add more functions to this package/ library which safely wraps different API's.
+For now, it combines Natural Language Processing, Google Sheets API, Google Distance Matrix API, and Web Scraping capabilities for the user to do as they please.
