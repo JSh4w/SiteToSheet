@@ -1,7 +1,7 @@
 /SiteToSheet/.env
 /SiteToSheet/sheets_credentials.json
 /SiteToSheet/venv/
-/SiteToSheet/local_storage/house_data.bak
-/SiteToSheet/local_storage/house_data.dat
-/SiteToSheet/local_storage/house_data.dir
+/SiteToSheet/local_storage/
 /SiteToSheet/test/ 
+/SiteToSheet/__pycache__
+./gitattributes
