@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: SiteToSheet
+Version: 0.1.0
+Summary: A tool to scrape websites and update Google Sheets
+Author-email: Your Name <your.email@example.com>
+License: MIT
+Requires-Python: >=3.7
+Requires-Dist: beautifulsoup4==4.12.3
+Requires-Dist: googlemaps==4.10.0
+Requires-Dist: gspread==6.1.2
+Requires-Dist: numpy==2.0.1
+Requires-Dist: pandas==2.2.2
+Requires-Dist: protobuf==5.27.3
+Requires-Dist: python-dotenv==1.0.1
+Requires-Dist: ratelimit==2.2.1
+Requires-Dist: requests==2.32.3
+Requires-Dist: setuptools==69.2.0
+Requires-Dist: spacy==3.7.5

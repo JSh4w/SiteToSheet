@@ -1,0 +1,2 @@
+[console_scripts]
+sitetosheet = SiteToSheet.run:main
