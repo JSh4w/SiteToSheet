@@ -1,8 +1,0 @@
-/SiteToSheet/.env
-/SiteToSheet/sheets_credentials.json
-/SiteToSheet/venv/
-/SiteToSheet/local_storage/
-/SiteToSheet/test/ 
-/SiteToSheet/__pycache__
-.gitattributes
-.gitignore
