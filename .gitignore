@@ -4,5 +4,5 @@
 /SiteToSheet/local_storage/
 /SiteToSheet/test/ 
 /SiteToSheet/__pycache__
-./.gitattributes
-./.gitignore
+.gitattributes
+.gitignore
