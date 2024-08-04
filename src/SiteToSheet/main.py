@@ -42,10 +42,8 @@ class SiteToSheetProcessor:
         return None 
     
     def get_links(self):
-        print(list(self.gsheets_instance.gs_headers.keys())[0])
         self.all_links = self.gsheets_instance.extract_links()
         self.links_to_search, self.stored_links = check_links_shelf(self.storage_directory, self.all_links)
-        print(f"Data to search and add to sheets \n {self.links_to_search}")
  
     def process_links_update_sheet(self, enable_google_maps: bool, force_link_process: bool):
         if enable_google_maps and ((self.links_to_search is not None) or force_link_process):
@@ -73,9 +71,9 @@ class SiteToSheetProcessor:
                 self.gmaps_instance.set_start(start)
 
                 #compares with googlesheets to only search if tenant info in the headers
+                print(f"Adding time to destination from {start} to {destination_matches}")
                 for i in destination_matches:
                     destination = destination_info[i]
-                    print(destination)
                     time_to_destination = self.gmaps_instance.time_to_destination(destination)
                     web_info[i] = time_to_destination
 

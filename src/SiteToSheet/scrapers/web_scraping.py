@@ -106,7 +106,7 @@ class WebDataHunter:
                 pc = ""
             try:
                 location_output=""
-                for i in locations:
+                for i in locations[:4]:
                     location_output+= i + " "
                 location_output+= pc
             except IndexError:
@@ -117,9 +117,9 @@ class WebDataHunter:
         else:
             #All handles regex
             if self.is_regex(match):
-                print("using regex match")
+                print("Using regex match")
             else :
-                print("using string match")
+                print("Using string match")
             all_matches = [(match.group(), match.start()) for match in re.finditer(match, text)]
             if all_matches:
                 successful_match = all_matches[0]

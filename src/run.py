@@ -21,6 +21,8 @@ def parse_arguments():
     return parser.parse_args()
 
 def main(): 
+    # Parse arguments from Command line - see parse_arguments()
+    args = parse_arguments()
 
     # Clear shelf if --remove_shelf is provided, see utils/shelf_functions.py
     # This is done first as it exits the script 
@@ -34,9 +36,6 @@ def main():
         print_shelf_data(storage_dir, 'auxilliary')   
         print("Exiting script")
         exit()  
-
-    # Parse arguments from Command line - see parse_arguments()
-    args = parse_arguments()
 
     # Load configuration file and update environment variables, taken from config.py
     load_configuration()

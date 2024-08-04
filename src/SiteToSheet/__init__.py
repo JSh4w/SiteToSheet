@@ -3,7 +3,7 @@ from .main import SiteToSheetProcessor
 from .scrapers.web_scraping import WebDataHunter
 from .utils.shelf_functions import (
     make_data_shelf, 
-    get_data_shelf,
+    get_shelf_data,
     print_shelf_data,
     check_links_shelf,
     update_shelf,
