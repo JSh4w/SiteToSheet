@@ -106,7 +106,8 @@ class WebDataHunter:
                 pc = ""
             try:
                 location_output=""
-                for i in locations[:4]:
+                #limit it to the first 4 matches, anymore could be erroneous/ confuse google
+                for i in locations[:3]:
                     location_output+= i + " "
                 location_output+= pc
             except IndexError:
