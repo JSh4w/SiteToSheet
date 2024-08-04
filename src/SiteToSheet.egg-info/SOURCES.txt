@@ -1,0 +1,12 @@
+LICENSE
+README.md
+pyproject.toml
+src/SiteToSheet/__init__.py
+src/SiteToSheet/config.py
+src/SiteToSheet/main.py
+src/SiteToSheet.egg-info/PKG-INFO
+src/SiteToSheet.egg-info/SOURCES.txt
+src/SiteToSheet.egg-info/dependency_links.txt
+src/SiteToSheet.egg-info/entry_points.txt
+src/SiteToSheet.egg-info/requires.txt
+src/SiteToSheet.egg-info/top_level.txt

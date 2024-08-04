@@ -63,14 +63,28 @@ class WebDataHunter:
         rp.read()
         return rp.can_fetch("*", url)
 
-    
+    #NLP process returns lists of list (text and the corresponding label)
+    def nlp_process(self, text, labels) ->list:
+        nlp = spacy.load("en_core_web_sm")
+        doc = nlp(text)
+        matches=[]
+        for ent in doc.ents:
+            if ent.label_ in labels:
+                matches.append([ent.text, ent.label_])
+        return matches
+            
+
+
+    #TODO match via regex first then if not found use NLP for more accuracy 
     def single_match_search(self, text, match):
-        if "(£)" in match:
+        if "(£)" in match or "Price" in match:
             successful_match = [(match.group(), match.start()) for match in re.finditer(r'£\d{1,3},\d{1,3}', text)]
+            if len(successful_match) == 0:
+                return self.nlp_process(text, ["MONEY"])
             for i in successful_match:
                 min_range = i[1]-30
-                maxc_range = i[1]+30
-                search_text = text[min_range:maxc_range]
+                max_range = i[1]+30
+                search_text = text[min_range:max_range]
                 match=str(match).replace("(£)","")
                 if match in search_text:
                     return i[0]
@@ -78,8 +92,8 @@ class WebDataHunter:
                     return f"No {match} , found this value"+ str(i[0])
         
         if "Location" in match:
-            postcode_pattern = r'\b([A-Z]{1,2}[0-9R][0-9A-Z]? ?[0-9][A-Z]{2}|[A-Z]{1,2}[0-9R][0-9A-Z]?)\b'
-            postcodes = re.findall(postcode_pattern, text)
+            uk_postcode_pattern = r'\b([A-Z]{1,2}[0-9R][0-9A-Z]? ?[0-9][A-Z]{2}|[A-Z]{1,2}[0-9R][0-9A-Z]?)\b'
+            postcodes = re.findall(uk_postcode_pattern, text)
             nlp = spacy.load("en_core_web_sm")
             doc = nlp(text)
             locations = []
@@ -90,34 +104,57 @@ class WebDataHunter:
                 pc = postcodes[0]
             else:
                 pc = ""
-            location_output= locations[0] + " " + locations[1] + " " + pc
+            try:
+                location_output=""
+                #limit it to the first 4 matches, anymore could be erroneous/ confuse google
+                for i in locations[:3]:
+                    location_output+= i + " "
+                location_output+= pc
+            except IndexError:
+                print("No location found")
 
             return location_output
             
         else:
-            return("none")
-            #if self.is_regex(match):
-            #    successful_match = [(match.group(), match.start()) for match in re.finditer(match, text)][0]
-            #else :
-            #    successful_match = [(match.group(), match.start()) for match in re.finditer(match, text)][0]
-            
-        #return successful_match
+            #All handles regex
+            if self.is_regex(match):
+                print("Using regex match")
+            else :
+                print("Using string match")
+            all_matches = [(match.group(), match.start()) for match in re.finditer(match, text)]
+            if all_matches:
+                successful_match = all_matches[0]
 
-    @sleep_and_retry
-    @limits(calls=2, period=2)
-    @daily_limit(max_daily=20)
-    def obtain_all_link_info(self, url : str, search_list : list) -> dict:
-        """Returns a dictionary of information from the link"""
-        output={}
+            #For handling nlp if required
+            else:
+                nlp = spacy.load("en_core_web_sm")
+                doc = nlp(text)
+                #see page 21 for entity types https://catalog.ldc.upenn.edu/docs/LDC2013T19/OntoNotes-Release-5.0.pdf
+                #ent references entity within the doc 
+                for ent in doc.ents:
+                    if match.upper() in ent.label_:
+                        return ent.text
+                return "No match found"
+    
+    def html_parser(self, url : str) -> str :
         if self.can_fetch(url):
             res = requests.get(url, headers=self.headers)
         else:
             raise Exception("Robot.txt disallows access to this link")
         res.raise_for_status()
         soup = BeautifulSoup(res.text, "html.parser")
-        just_text=soup.get_text()
+        return soup.get_text()
 
+    #Add rate limitting 
+    @sleep_and_retry
+    @limits(calls=2, period=2)
+    @daily_limit(max_daily=20)
+    def obtain_all_link_info(self, url : str, search_list : list) -> dict:
+        """Returns a dictionary of information from the link"""
+        output={}
+        just_text=self.html_parser(url)
         for i in search_list:
+            #Single match search uses NLP and regex
             output[str(i)]=self.single_match_search(just_text, i)
         output['Link']=url
 

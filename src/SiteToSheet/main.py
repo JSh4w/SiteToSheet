@@ -32,7 +32,7 @@ class SiteToSheetProcessor:
                 self.gsheets_instance.destination_info = self.gsheets_instance.extract_destination_info()
         else:
             try:
-                self.gsheets_instance.gs_headers = get_shelf_data(self.storage_directory, "auxilliary")['headers']
+                self.gsheets_instance.gs_headers = get_shelf_data(self.storage_directory, "auxilliary")['Headers']
                 self.gsheets_instance.destination_info = get_shelf_data(self.storage_directory, "auxilliary")['Info']
             except KeyError:
                 self.gsheets_instance.gs_headers = self.gsheets_instance.extract_headers()
@@ -42,16 +42,13 @@ class SiteToSheetProcessor:
         return None 
     
     def get_links(self):
-        print(list(self.gsheets_instance.gs_headers.keys())[0])
         self.all_links = self.gsheets_instance.extract_links()
         self.links_to_search, self.stored_links = check_links_shelf(self.storage_directory, self.all_links)
-        print(f"Data to search and add to sheets \n {self.links_to_search}")
  
     def process_links_update_sheet(self, enable_google_maps: bool, force_link_process: bool):
         if enable_google_maps and ((self.links_to_search is not None) or force_link_process):
-            #TODO implement improved API limiting 
             self.gmaps_instance = GoogleMapsClient(api_key=self.google_maps_api_key)
-            headers = get_shelf_data(self.storage_directory, "auxilliary")['H eaders']
+            headers = get_shelf_data(self.storage_directory, "auxilliary")['Headers']
             destination_info = get_shelf_data(self.storage_directory, "auxilliary")['Info']
 
             for i in self.links_to_search:
@@ -66,14 +63,17 @@ class SiteToSheetProcessor:
                             matches.append(i)
                         else:
                             destination_matches.append(i)
+
+                #Rate limiting applied to obtain_all_link_info method
                 web_info = web_instance.obtain_all_link_info(link, matches)
 
                 start = web_info['Location']
                 self.gmaps_instance.set_start(start)
+
                 #compares with googlesheets to only search if tenant info in the headers
+                print(f"Adding time to destination from {start} to {destination_matches}")
                 for i in destination_matches:
                     destination = destination_info[i]
-                    print(destination)
                     time_to_destination = self.gmaps_instance.time_to_destination(destination)
                     web_info[i] = time_to_destination
 
@@ -83,7 +83,8 @@ class SiteToSheetProcessor:
     
     def sync_sheets_with_local_data(self, sync_local_data: bool):
         if sync_local_data:
-            set_limit = 10 
+            #Limit of 50 sync sheets to prevent overloading google sheets
+            set_limit = 50 
             all_shelfed_data = get_shelf_data(self.storage_directory)
             for i in itertools.islice(self.stored_links, set_limit):
                 if i in all_shelfed_data:

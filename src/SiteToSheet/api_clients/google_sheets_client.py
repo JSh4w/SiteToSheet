@@ -143,12 +143,11 @@ class GoogleSheetsClient:
         """
         sheet=self.links_sheet
         links= sheet.col_values(self.gs_headers["Link"])[1:]
-        print(links)
-        print(web_info["Link"])
+        print("Links in googlesheets",links)
+        print("Links searching in googlesheets",web_info["Link"])
         if web_info["Link"] in links:
             index = links.index(web_info["Link"])
             for i in web_info:
-                print(i)
                 sheet.update_cell(index+2, self.gs_headers[i], web_info[i])
 
 

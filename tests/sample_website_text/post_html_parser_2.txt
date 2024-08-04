@@ -1,11 +1,8 @@
-import re
-import spacy
-
-text="""
 
 
 
-3 bedroom flat for rent in Hazellville Road, London, N19
+
+3 bedroom flat for rent in Mount View Road, N4
 
 
 
@@ -725,7 +722,11 @@ Sell Overseas property
 
 
 
-1212Hazellville Road, London, N19£2,200 pcm£508 pwThe amount per month or week you need to pay the landlord.Read more about property rent in our glossary page.Tenancy infoReduced yesterdayLetting detailsLet available date: NowDeposit: £2,538A deposit provides security for a landlord against damage, or unpaid rent by a tenant.Read more about deposit in our glossary page.Min. Tenancy: Ask agentHow long the landlord offers to let the property for.Read more about tenancy length in our glossary page.Let type: Long termFurnish type: FurnishedCouncil Tax: Ask agentPROPERTY TYPE  FlatBEDROOMS  3BATHROOMS  1SIZE  Ask agent1Key featuresCentral heatingDishwasherWashing machineWhite goodsCable/SatelliteBroadband/ADSLDescriptionProperty number 50207. Click the "Request Details" button, submit the form and we'll text & email you within minutes, day or night.Comprising two double and one small single bedroom, kitchen/lounge, bathroom with WC and hallway storage. The block as attractive green spaces in the communal area and is clean and well cared for. Council Tax Band C. Fibre optic broadband available. Parking permit available upon application and payment to Islington Council. If you're interested in this property please click the "request details" button aboveRead full descriptionCOUNCIL TAXA payment made to your local authority in order to pay for local services like schools, libraries, and refuse collection. The amount you pay depends on the value of the property.Read more about council Tax in our glossary page.Ask agentPARKINGDetails of how and where vehicles can be parked, and any associated costs.Read more about parking in our glossary page.YesGARDENA property has access to an outdoor space, which could be private or shared.Ask agentACCESSIBILITYHow a property has been adapted to meet the needs of vulnerable or disabled individuals.Read more about accessibility in our glossary page.Ask agentEnergy Performance CertificateUtilities, rights & restrictionsHazellville Road, London, N19Open mapStreet ViewStationsSchoolsNEAREST STATIONSDistances are straight line measurements from the centre of the postcodeArchway Station0.5 milesCrouch Hill Station0.6 milesUpper Holloway Station0.6 milesBroadband speedAbout the agentVisum, NationwideWeb based Estate Agent Visum is the UK's original online estate and letting agent, helping vendors and landlords since 2004. We offer a full range of lettings and estate agency services across the UK and have directly enabled over 20,000 customers to let or sell their properties away from the constraints of traditional agents.If you are a forward thinking person that wants to avoid paying high agency fees and thinks traditional agents don't give good value for money then you need to speak to us. Our service Read moreMore properties from this agentIndustry affiliationsNotesThese notes are private, only you can see them.Save noteMARKETED BYVisum, NationwideWeb based Estate Agent More properties from this agentCall agentRequest detailsStaying secure when looking for propertyEnsure you're up to date with our latest advice on how to avoid fraud or scams when looking for property online.Visit our security centre to find out more Disclaimer - Property reference 50207. The information displayed about this property comprises a property advertisement. Rightmove.co.uk makes no warranty as to the accuracy or completeness of the advertisement or any linked or associated information, and Rightmove has no control over the content. This property advertisement does not constitute property particulars. The information is provided and maintained by Visum, Nationwide. Please contact the selling agent or developer directly to obtain any information which may be available under the terms of The Energy Performance of Buildings (Certificates and Inspections) (England and Wales) Regulations 2007 or the Home Report if in relation to a residential property in Scotland.
+99Mount View Road, N4£2,600 pcm£600 pwThe amount per month or week you need to pay the landlord.Read more about property rent in our glossary page.Tenancy infoAdded yesterdayLetting detailsLet available date: 10/08/2024Deposit: £2,999A deposit provides security for a landlord against damage, or unpaid rent by a tenant.Read more about deposit in our glossary page.Min. Tenancy: Ask agentHow long the landlord offers to let the property for.Read more about tenancy length in our glossary page.Let type: Long termFurnish type: FurnishedCouncil Tax: Ask agentPROPERTY TYPE  FlatBEDROOMS  3BATHROOMS  1SIZE  Ask agentDescriptionAddison Townsend are pleased to offer this double bedroom in a three bedroom ground floor conversion flat located on a residential road in Harringay. The flat offers, modern fitted kitchen, modern shower room, shared garden, reception room and is approximately 0.5miles to Harringay Station, 0.6miles to Crouch Hill Station, a short walk to local shops and bus routes. Available 10th August. Furnished.Read full descriptionCOUNCIL TAXA payment made to your local authority in order to pay for local services like schools, libraries, and refuse collection. The amount you pay depends on the value of the property.Read more about council Tax in our glossary page.Band: EPARKINGDetails of how and where vehicles can be parked, and any associated costs.Read more about parking in our glossary page.Ask agentGARDENA property has access to an outdoor space, which could be private or shared.YesACCESSIBILITYHow a property has been adapted to meet the needs of vulnerable or disabled individuals.Read more about accessibility in our glossary page.Ask agentEnergy Performance CertificateUtilities, rights & restrictionsMount View Road, N4Open mapStreet ViewStationsSchoolsNEAREST STATIONSDistances are straight line measurements from the centre of the postcodeHarringay Station0.4 milesCrouch Hill Station0.4 milesHornsey Station0.7 milesBroadband speedAbout the agentAddison Townsend, East Finchley40 High Road,
+London,
+N2 9PJWithout question we are regarded as a leading local agent. We believe that it is our ability to provide the highest level of customer care combined with industry-leading marketing and dedicated and professional sales teams that have helped make this happen.By offering comprehensive and effective marketing we are able to attract many more buyers, which, coupled with our friendly staff, means that we are best placed to sell your property quickly and at the best price, with of course the Read moreMore properties from this agentNotesThese notes are private, only you can see them.Save noteMARKETED BYAddison Townsend, East Finchley40 High Road,
+London,
+N2 9PJMore properties from this agentCall agentRequest detailsStaying secure when looking for propertyEnsure you're up to date with our latest advice on how to avoid fraud or scams when looking for property online.Visit our security centre to find out more Disclaimer - Property reference prlo_487891923. The information displayed about this property comprises a property advertisement. Rightmove.co.uk makes no warranty as to the accuracy or completeness of the advertisement or any linked or associated information, and Rightmove has no control over the content. This property advertisement does not constitute property particulars. The information is provided and maintained by Addison Townsend, East Finchley. Please contact the selling agent or developer directly to obtain any information which may be available under the terms of The Energy Performance of Buildings (Certificates and Inspections) (England and Wales) Regulations 2007 or the Home Report if in relation to a residential property in Scotland.
         *This is the average speed from the provider with the fastest broadband package available at this postcode.
         The average speed displayed is based on the download speeds of at least 50% of customers at peak time (8pm to 10pm).
         Fibre/cable services at the postcode are subject to availability and may differ between properties within a postcode.
@@ -903,13 +904,62 @@ HomeViews Business Hub
 
 
 
-"""
 
-nlp = spacy.load("en_core_web_sm")
 
-doc = nlp(text)
-locations = []
-for ent in doc.ents:
-    if ent.label_ in ["GPE", "LOC", "FAC"]:
-        locations.append(ent.text)
-print(locations)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Site map
+Help
+Cookies
+Safety
+                and Security
+Terms of Use
+Privacy Policy
+
+
+
+
+
+
+
+
+
+
+
+
+
