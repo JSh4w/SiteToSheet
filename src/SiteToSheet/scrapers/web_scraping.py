@@ -1,14 +1,14 @@
-import re
-import spacy
-import requests
-import time 
-from functools import wraps 
-from bs4 import BeautifulSoup
-from ratelimit import limits, sleep_and_retry
+from functools import wraps
 from urllib import robotparser
 from urllib.parse import urlparse
-
-class WebDataHunter:
+import re
+import time
+from ratelimit import limits, sleep_and_retry
+import spacy
+import requests
+from bs4 import BeautifulSoup
+        
+class WebDataHunter:   
         
     def __init__(self):
         self.headers = {
@@ -32,7 +32,7 @@ class WebDataHunter:
         except re.error:
             # If it fails to compile, it's definitely not a valid regex
             return False
-        
+
     @staticmethod
     def daily_limit(max_daily):
         def decorator(func):
@@ -53,8 +53,7 @@ class WebDataHunter:
                 return func(*args, **kwargs)
             return wrapper
         return decorator
-    
-    @staticmethod 
+    @staticmethod
     def can_fetch(url):
         rp = robotparser.RobotFileParser()
         parsed_uri = urlparse(url)
@@ -71,14 +70,14 @@ class WebDataHunter:
         for ent in doc.ents:
             if ent.label_ in labels:
                 matches.append([ent.text, ent.label_])
-        return matches
-            
+        return matches 
 
 
-    #TODO match via regex first then if not found use NLP for more accuracy 
+    #Match via regex first then if not found use NLP for more accuracy
     def single_match_search(self, text, match):
         if "(£)" in match or "Price" in match:
-            successful_match = [(match.group(), match.start()) for match in re.finditer(r'£\d{1,3},\d{1,3}', text)]
+            successful_match =\
+            [(match.group(), match.start()) for match in re.finditer(r'£\d{1,3},\d{1,3}', text)]
             if len(successful_match) == 0:
                 return self.nlp_process(text, ["MONEY"])
             for i in successful_match:
@@ -90,7 +89,6 @@ class WebDataHunter:
                     return i[0]
                 else:
                     return f"No {match} , found this value"+ str(i[0])
-        
         if "Location" in match:
             uk_postcode_pattern = r'\b([A-Z]{1,2}[0-9R][0-9A-Z]? ?[0-9][A-Z]{2}|[A-Z]{1,2}[0-9R][0-9A-Z]?)\b'
             postcodes = re.findall(uk_postcode_pattern, text)
@@ -115,37 +113,36 @@ class WebDataHunter:
 
             return location_output
             
+        #All handles regex
+        if self.is_regex(match):
+            print("Using regex match")
+        else :
+            print("Using string match")
+        all_matches = [(match.group(), match.start()) for match in re.finditer(match, text)]
+        if all_matches:
+            successful_match = all_matches[0]
+        #For handling nlp if required
         else:
-            #All handles regex
-            if self.is_regex(match):
-                print("Using regex match")
-            else :
-                print("Using string match")
-            all_matches = [(match.group(), match.start()) for match in re.finditer(match, text)]
-            if all_matches:
-                successful_match = all_matches[0]
+            nlp = spacy.load("en_core_web_sm")
+            doc = nlp(text)
+            #see page 21 for entity types
+            #https://catalog.ldc.upenn.edu/docs/LDC2013T19/OntoNotes-Release-5.0.pdf
+            #ent references entity within the doc
+            for ent in doc.ents:
+                if match.upper() in ent.label_:
+                    return ent.text
+            return "No match found"
 
-            #For handling nlp if required
-            else:
-                nlp = spacy.load("en_core_web_sm")
-                doc = nlp(text)
-                #see page 21 for entity types https://catalog.ldc.upenn.edu/docs/LDC2013T19/OntoNotes-Release-5.0.pdf
-                #ent references entity within the doc 
-                for ent in doc.ents:
-                    if match.upper() in ent.label_:
-                        return ent.text
-                return "No match found"
-    
     def html_parser(self, url : str) -> str :
         if self.can_fetch(url):
-            res = requests.get(url, headers=self.headers)
+            res = requests.get(url, headers=self.headers, timeout=10)
         else:
             raise Exception("Robot.txt disallows access to this link")
         res.raise_for_status()
         soup = BeautifulSoup(res.text, "html.parser")
         return soup.get_text()
 
-    #Add rate limitting 
+    #Add rate limitting
     @sleep_and_retry
     @limits(calls=2, period=2)
     @daily_limit(max_daily=20)
@@ -159,6 +156,12 @@ class WebDataHunter:
         output['Link']=url
 
         return output 
+        return output 
+    
+    
+
+
+        return output
     
     
 
