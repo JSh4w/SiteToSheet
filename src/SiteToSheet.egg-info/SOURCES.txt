@@ -10,3 +10,5 @@ src/SiteToSheet.egg-info/dependency_links.txt
 src/SiteToSheet.egg-info/entry_points.txt
 src/SiteToSheet.egg-info/requires.txt
 src/SiteToSheet.egg-info/top_level.txt
+tests/test_integration_scrape_sheets.py
+tests/test_web_scraping.py

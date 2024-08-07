@@ -14,19 +14,21 @@ class GoogleSheetsClient:
         Returns:
             None
         """
-        self.sheet_id = sheet_id 
+        self.sheet_id = sheet_id
         self.sheet_idscopes= [
             "https://www.googleapis.com/auth/spreadsheets"
-        ] 
+        ]
         self.creds  = Credentials.from_service_account_file(path_to_json_cred, scopes=self.sheet_idscopes)
 
 
         self._gs_headers = None
         self._destination_info = None
-        self.gs_headers = None 
-        self.destination_info = None 
-        return None 
-    
+        self.gs_headers = None
+        self.destination_info = None
+        self.links_sheet = None
+        self.google_links = None
+        return None
+
     def retrieve_google_sheet(self):
         """Gets google sheet document and returns as self.workbook"""
         client = gspread.authorize(self.creds)
@@ -37,19 +39,19 @@ class GoogleSheetsClient:
     @property
     def gs_headers(self):
         return self._gs_headers
-    
+
     @gs_headers.setter
     def gs_headers(self, gs_headers):
-        self._gs_headers=gs_headers 
-    
+        self._gs_headers=gs_headers
+
     @property
     def destination_info(self):
         return self._destination_info
-    
+
     @destination_info.setter
     def destination_info(self, destination_info):
         self._destination_info=destination_info
-    
+
     def extract_headers(self) -> dict:
         """
         Retrieves the headers from the provided workbook.
@@ -85,7 +87,7 @@ class GoogleSheetsClient:
         self.destination_info = location_info
 
         return self.destination_info
-    
+
     def extract_links(self) -> dict:
         """
         Retrieves the headers and links data from the provided workbook.
@@ -126,7 +128,7 @@ class GoogleSheetsClient:
                 link_dictionary[self.gs_headers[data.index(x)]] = x
             links_data_dict[data[0]]=link_dictionary
         #list of links
-        self.google_links=links 
+        self.google_links=links
 
         return [links,links_data_dict]
 
@@ -149,6 +151,3 @@ class GoogleSheetsClient:
             index = links.index(web_info["Link"])
             for i in web_info:
                 sheet.update_cell(index+2, self.gs_headers[i], web_info[i])
-
-
-

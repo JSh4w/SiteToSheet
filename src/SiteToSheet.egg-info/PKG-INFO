@@ -9,11 +9,11 @@ License-File: LICENSE
 Requires-Dist: beautifulsoup4==4.12.3
 Requires-Dist: googlemaps==4.10.0
 Requires-Dist: gspread==6.1.2
-Requires-Dist: numpy
-Requires-Dist: pandas
+Requires-Dist: numpy==1.26.4
+Requires-Dist: pandas==2.2.2
 Requires-Dist: protobuf==5.27.3
 Requires-Dist: python-dotenv==1.0.1
 Requires-Dist: ratelimit==2.2.1
 Requires-Dist: requests==2.32.3
 Requires-Dist: setuptools==72.1.0
-Requires-Dist: spacy
+Requires-Dist: spacy==3.7.5
