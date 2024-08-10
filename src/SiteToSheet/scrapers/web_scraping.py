@@ -1,3 +1,4 @@
+"""Handles calls to web scrapers"""
 from functools import wraps
 from urllib import robotparser
 from urllib.parse import urlparse
@@ -7,16 +8,19 @@ from ratelimit import limits, sleep_and_retry
 import spacy
 import requests
 from bs4 import BeautifulSoup
-        
-class WebDataHunter:   
-        
+       
+class WebDataHunter:
     def __init__(self):
-        self.headers = {
-            "User-Agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",  "Accept":"text/html,application/xhtml+xml,application/xml; q=0.9,image/webp,image/apng,*/*;q=0.8"
-        } 
-
+        # Option 2: Using multiple lines for each key-value pair
+        self.headers = {    
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_3) "
+                          "AppleWebKit/537.36 (KHTML, like Gecko) "
+                          "Chrome/71.0.3578.98 Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,"
+                      "image/webp,image/apng,*/*;q=0.8"
+        }
     def is_regex(self,pattern):
-    # Check for common regex metacharacters
+        # Check for common regex metacharacters
         regex_chars = set(r'.*+?^$()[]{}|\\')
 
         # If it contains regex metacharacters, it's likely a regex
@@ -112,7 +116,7 @@ class WebDataHunter:
                 print("No location found")
 
             return location_output
-            
+           
         #All handles regex
         if self.is_regex(match):
             print("Using regex match")
@@ -155,14 +159,4 @@ class WebDataHunter:
             output[str(i)]=self.single_match_search(just_text, i)
         output['Link']=url
 
-        return output 
-        return output 
-    
-    
-
-
         return output
-    
-    
-
-

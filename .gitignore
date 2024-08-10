@@ -1,3 +1,4 @@
 **/__pycache/**
 *.pyc 
 venv/
+local_storage/
