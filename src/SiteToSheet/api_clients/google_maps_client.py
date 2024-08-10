@@ -1,9 +1,16 @@
-import googlemaps
-
+"""File to handle Google Maps API calls"""
 from datetime import datetime
 from datetime import timedelta
+import googlemaps
 
 class GoogleMapsClient:
+    """
+    Initializes a GoogleMapsClient instance.
+    Parameters:
+        api_key (str): The API key for the Google Maps API.
+    Returns:
+        None
+    """
     def __init__(self, api_key):
         self.api_key = api_key
         self.gmaps = googlemaps.Client(key=api_key)
@@ -16,13 +23,14 @@ class GoogleMapsClient:
         """Sets start location and transport mode"""
         self.transport_mode = transport_mode
         self.start = start
-        self.next_monday = (datetime.today() + timedelta(days=-datetime.today().weekday(), weeks=1)).replace(hour=9, minute=0, second=0, microsecond=0)  
+        next_monday = datetime.today() + timedelta(days=-datetime.today().weekday(), weeks=1)
+        self.next_monday = next_monday.replace(hour=9, minute=0, second=0, microsecond=0)
 
     def time_to_destination(self, destination, start = None ):
         """Returns time to destination"""
         if start is None :
             start = self.start
- 
+        # get distance in meters
         dist = self.gmaps.distance_matrix(
             start,
             destination,
@@ -63,4 +71,3 @@ class GoogleMapsClient:
 
         self.nearby_stations = stat_list
         return stat_list[0]
-    
