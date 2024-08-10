@@ -18,7 +18,8 @@ class GoogleSheetsClient:
         self.sheet_idscopes= [
             "https://www.googleapis.com/auth/spreadsheets"
         ]
-        self.creds  = Credentials.from_service_account_file(path_to_json_cred, scopes=self.sheet_idscopes)
+        self.creds  =\
+            Credentials.from_service_account_file(path_to_json_cred, scopes=self.sheet_idscopes)
 
 
         self._gs_headers = None

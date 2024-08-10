@@ -8,7 +8,7 @@ from ratelimit import limits, sleep_and_retry
 import spacy
 import requests
 from bs4 import BeautifulSoup
-       
+     
 class WebDataHunter:
     def __init__(self):
         # Option 2: Using multiple lines for each key-value pair
@@ -74,7 +74,7 @@ class WebDataHunter:
         for ent in doc.ents:
             if ent.label_ in labels:
                 matches.append([ent.text, ent.label_])
-        return matches 
+        return matches
 
 
     #Match via regex first then if not found use NLP for more accuracy
@@ -94,7 +94,8 @@ class WebDataHunter:
                 else:
                     return f"No {match} , found this value"+ str(i[0])
         if "Location" in match:
-            uk_postcode_pattern = r'\b([A-Z]{1,2}[0-9R][0-9A-Z]? ?[0-9][A-Z]{2}|[A-Z]{1,2}[0-9R][0-9A-Z]?)\b'
+            uk_postcode_pattern =\
+                r'\b([A-Z]{1,2}[0-9R][0-9A-Z]? ?[0-9][A-Z]{2}|[A-Z]{1,2}[0-9R][0-9A-Z]?)\b'
             postcodes = re.findall(uk_postcode_pattern, text)
             nlp = spacy.load("en_core_web_sm")
             doc = nlp(text)
@@ -116,7 +117,6 @@ class WebDataHunter:
                 print("No location found")
 
             return location_output
-           
         #All handles regex
         if self.is_regex(match):
             print("Using regex match")

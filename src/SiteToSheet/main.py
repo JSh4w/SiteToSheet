@@ -5,7 +5,12 @@ import itertools
 from .api_clients.google_maps_client import GoogleMapsClient
 from .api_clients.google_sheets_client import GoogleSheetsClient
 from .scrapers.web_scraping import WebDataHunter
-from .utils.shelf_functions import *
+from .utils.shelf_functions import (
+    get_shelf_data,
+    check_links_shelf,
+    update_shelf,
+    update_auxilliary_shelf
+)
 
 class SiteToSheetProcessor:
     def __init__(self, storage_directory: pathlib.Path, credentials_filepath: pathlib.Path):
@@ -26,7 +31,7 @@ class SiteToSheetProcessor:
         self.gmaps_instance = None
         self.google_maps_api_key = os.getenv('GOOGLE_API_KEY')
         self.google_sheets_id = os.getenv('SHEET_ID')
-        assert self.google_maps_api_key is not None, "Please set the GOOGLE_API_KEY environment variable"
+        assert self.google_maps_api_key is not None, "Set the GOOGLE_API_KEY env var"
         assert self.google_sheets_id is not None, "Please set the SHEET_ID environment variable"
         self.all_links = None
         self.links_to_search = None
@@ -40,7 +45,7 @@ class SiteToSheetProcessor:
         self.gsheets_instance =\
             GoogleSheetsClient(sheet_id=sheet_id, path_to_json_cred=path_to_json_cred)
         self.gsheets_instance.retrieve_google_sheet()
-        return None 
+        return None
 
     def update_headers_and_destination_info(self, force_update: bool):
         if force_update:
@@ -57,13 +62,20 @@ class SiteToSheetProcessor:
                 self.gsheets_instance.gs_headers = self.gsheets_instance.extract_headers()
                 self.gsheets_instance.destination_info =\
                     self.gsheets_instance.extract_destination_info()
-        update_auxilliary_shelf(self.storage_directory,{"Headers":self.gsheets_instance.gs_headers})
-        update_auxilliary_shelf(self.storage_directory,{"Info":self.gsheets_instance.destination_info})
+        update_auxilliary_shelf(
+            self.storage_directory,
+            {"Headers":self.gsheets_instance.gs_headers}
+            )
+        update_auxilliary_shelf(
+            self.storage_directory,
+            {"Info":self.gsheets_instance.destination_info}
+            )
         return None
 
     def get_links(self):
         self.all_links = self.gsheets_instance.extract_links()
-        self.links_to_search, self.stored_links = check_links_shelf(self.storage_directory, self.all_links)
+        self.links_to_search, self.stored_links =\
+            check_links_shelf(self.storage_directory, self.all_links)
 
     def process_links_update_sheet(self, enable_google_maps: bool, force_link_process: bool):
         if enable_google_maps and ((self.links_to_search is not None) or force_link_process):
