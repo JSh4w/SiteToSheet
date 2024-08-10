@@ -2,7 +2,7 @@
 
 SiteToSheet is a Python project that combines web scraping, natural language processing, and Google API integration to extract data from websites and store it in Google Sheets.
 
-![python workflow](https://github.com/JSh4w/SiteToSheet/actions/workflows/pyproject.toml/badge.svg)
+![python workflow](https://github.com/JSh4w/SiteToSheet/actions/workflows/python-package.yml/badge.svg)
 
 ## Installation
 
