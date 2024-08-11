@@ -67,5 +67,4 @@ def test_obtain_all_link_info(mock_get, web_hunter, mock_sheets_client):
     mock_sheets_client.update_links_info(web_info)
     mock_sheets_client.update_links_info.assert_called_with(web_info)
 
-    assert isinstance(web_info) == dict
-
+    assert isinstance(web_info, dict)
