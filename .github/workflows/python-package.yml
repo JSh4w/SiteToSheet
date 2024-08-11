@@ -26,6 +26,10 @@ jobs:
         python -m pip install flake8 pytest
         if (Test-Path requirements.txt) { pip install -r requirements.txt }
       shell: pwsh
+    - name: Install package
+      run: |
+        pip install -e .
+      shell: pwsh
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
