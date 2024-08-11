@@ -62,7 +62,8 @@ class GoogleMapsClient:
         stations_list=nearest_station['results']
         stat_list=[]
         try:
-            tube_list=open('../utils/tube_stops.txt', encoding="UTF-8").read().splitlines()
+            with open('../utils/tube_stops.txt', encoding="UTF-8") as file:
+                tube_list = file.read().splitlines()
         except NotADirectoryError as e:
             print(f"Could not find tube list at ../utils/tube_stops.txt, {e}")
         for i in stations_list:

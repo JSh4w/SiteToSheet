@@ -3,7 +3,7 @@
 This module provides a command-line interface for the SiteToSheet application.
 It allows users to interact with the application by specifying various command-line arguments.
 """
-
+import sys
 import argparse
 import pathlib
 from SiteToSheet.config import load_configuration, CREDENTIALS_FILE, ENV_FILE, update_env_config
@@ -71,14 +71,14 @@ def main():
     # This is done first as it exits the script
     if args.remove_shelf:
         clear_shelf(storage_dir)
-        print("Clearing shelf, ending script")
-        exit()
+        print("Cleared shelf, ending script")
+        sys.exit(0)
     if args.print_shelf:
         print_shelf_data(storage_dir, 'link_data')
         print('\n')
-        print_shelf_data(storage_dir, 'auxilliary')   
-        print("Exiting script")
-        exit()
+        print_shelf_data(storage_dir, 'auxilliary')
+        print("Printing shelf, ending script")
+        sys.exit(0)
     # Load configuration file and update environment variables, taken from config.py
     load_configuration()
     # Update environment variables if --set-google-api-key or --set-sheet-id is provided

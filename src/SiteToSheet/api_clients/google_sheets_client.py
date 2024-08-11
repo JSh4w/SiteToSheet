@@ -1,8 +1,19 @@
-#for sheet_hunter and filler:
+"""
+This module provides a client for interacting with Google Sheets.
+
+It includes a class called GoogleSheetsClient that provides
+methods for authenticating with Google Sheets and performing operations on sheets.
+"""
 import gspread
 from google.oauth2.service_account import Credentials
 
 class GoogleSheetsClient:
+    """
+    A client for interacting with Google Sheets.
+
+    This class provides methods for authenticating with Google Sheets and
+    performing operations on sheets.
+    """
     def __init__(self, sheet_id, path_to_json_cred):
         """
         Initializes the GoogleSheetsClient with the provided sheet_id and path_to_json_cred.
@@ -20,15 +31,12 @@ class GoogleSheetsClient:
         ]
         self.creds  =\
             Credentials.from_service_account_file(path_to_json_cred, scopes=self.sheet_idscopes)
-
-
         self._gs_headers = None
         self._destination_info = None
         self.gs_headers = None
         self.destination_info = None
         self.links_sheet = None
         self.google_links = None
-        return None
 
     def retrieve_google_sheet(self):
         """Gets google sheet document and returns as self.workbook"""
@@ -39,6 +47,12 @@ class GoogleSheetsClient:
         return workbook
     @property
     def gs_headers(self):
+        """
+        Gets the Google Sheets headers.
+
+        Returns:
+            dict: A dictionary containing the Google Sheets headers.
+        """
         return self._gs_headers
 
     @gs_headers.setter
@@ -47,6 +61,12 @@ class GoogleSheetsClient:
 
     @property
     def destination_info(self):
+        """
+        Gets the destination information.
+
+        Returns:
+            dict: A dictionary containing the destination information.
+        """
         return self._destination_info
 
     @destination_info.setter
