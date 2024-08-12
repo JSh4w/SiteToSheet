@@ -35,13 +35,14 @@ def test_obtain_all_link_info(mock_get, web_hunter, mock_sheets_client):
     It then calls the `obtain_all_link_info` method with a sample URL and a list of search terms.
     The method returns a dictionary containing the extracted information from the web page.
 
-    The test asserts that the returned dictionary contains the expected values for the "Link", "Location",
-    and "Price" keys. It also tests the interaction with the `GoogleSheetsClient` by asserting that the
+    The test asserts that the returned dictionary contains 
+    the expected values for the "Link", "Location", and "Price" keys.
+    It also tests the interaction with the `GoogleSheetsClient` by asserting that the
     `update_links_info` method is called with the correct argument.
 
     Parameters:
         mock_get (MagicMock): A mock object of the `requests.get` method.
-        web_hunter (WebDataHunter): An instance of the `WebDataHunter` class.
+        web_hunter_instance (WebDataHunter): An instance of the `WebDataHunter` class.
         mock_sheets_client (MagicMock): A mock object of the `GoogleSheetsClient` class.
 
     Returns:

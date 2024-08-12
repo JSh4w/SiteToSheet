@@ -94,7 +94,15 @@ class GoogleSheetsClient:
 
     def extract_destination_info(self, workbook = None) -> dict:
         """
-    
+        Extracts destination information from a Google Sheets workbook.
+
+        Args:
+            workbook: The Google Sheets workbook to extract data from. If None, 
+                the workbook is opened using the provided credentials and sheet ID.
+
+        Returns:
+            dict: A dictionary containing the destination information, where each key 
+                is a title and each value is the corresponding address.
         """
         if workbook is None:
             client = gspread.authorize(self.creds)
@@ -142,7 +150,7 @@ class GoogleSheetsClient:
 
         #create a dictionary of links associated with data
         links_data_dict={}
-        for i,j in enumerate(links):
+        for i, _ in enumerate(links):
             data=sheet.row_values(i+2)[0:len(self.gs_headers)]
             link_dictionary={}
             for x in data:

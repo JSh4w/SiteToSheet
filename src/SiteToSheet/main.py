@@ -39,7 +39,8 @@ from .utils.shelf_functions import (
 
 class SiteToSheetProcessor:
     """
-    SiteToSheetProcessor class orchestrates the data extraction and storage process for the SiteToSheet application.
+    SiteToSheetProcessor class orchestrates the data extraction 
+    and storage process for the SiteToSheet application.
 
     Attributes:
         storage_directory (pathlib.Path): The directory where data will be stored.
@@ -212,4 +213,4 @@ class SiteToSheetProcessor:
             for i in itertools.islice(self.stored_links, set_limit):
                 if i in all_shelfed_data:
                     gs_update_info = all_shelfed_data[i]
-                self.gsheets_instance.update_links_info(gs_update_info)
+                    self.gsheets_instance.update_links_info(gs_update_info)
