@@ -18,4 +18,16 @@ jobs:
         pip install pylint
     - name: Analysing the code with pylint
       run: |
-        pylint (Get-ChildItem -Recurse -Filter *.py | Select-Object -ExpandProperty FullName)
+        $files = Get-ChildItem -Recurse -Filter *.py | Select-Object -ExpandProperty FullName
+        $output = pylint $files --output-format=text
+        $output | Out-File -FilePath pylint_output.txt
+        $score = $output | Select-String -Pattern "Your code has been rated at (\d+\.\d+)" | ForEach-Object { $_.Matches.Groups[1].Value }
+        echo "PyLint Score: $score"
+        echo "PYLINT_SCORE=$score" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+    - name: Check PyLint score
+      run: |
+        $pylint_score = [double]$env:PYLINT_SCORE
+        if ($pylint_score -lt 9.5) {
+          echo "PyLint score is below 9.5. Failing the build."
+          exit 1
+        }
