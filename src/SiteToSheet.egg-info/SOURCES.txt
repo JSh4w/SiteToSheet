@@ -1,4 +1,5 @@
 LICENSE
+MANIFEST.in
 README.md
 pyproject.toml
 src/SiteToSheet/__init__.py
@@ -10,5 +11,13 @@ src/SiteToSheet.egg-info/dependency_links.txt
 src/SiteToSheet.egg-info/entry_points.txt
 src/SiteToSheet.egg-info/requires.txt
 src/SiteToSheet.egg-info/top_level.txt
+src/SiteToSheet/api_clients/__init__.py
+src/SiteToSheet/api_clients/google_maps_client.py
+src/SiteToSheet/api_clients/google_sheets_client.py
+src/SiteToSheet/scrapers/__init__.py
+src/SiteToSheet/scrapers/web_scraping.py
+src/SiteToSheet/utils/__init__.py
+src/SiteToSheet/utils/shelf_functions.py
+src/SiteToSheet/utils/tube_stops.txt
 tests/test_integration_scrape_sheets.py
 tests/test_web_scraping.py
