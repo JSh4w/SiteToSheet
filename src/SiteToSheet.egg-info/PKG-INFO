@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: SiteToSheet
-Version: 0.1.0
+Version: 1.0.0
 Summary: A tool to scrape websites and update Google Sheets
 Author-email: Jonathan <jontyshaw@btinternet.com>
 License: MIT
