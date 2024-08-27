@@ -3,3 +3,4 @@
 venv/
 local_storage/
 dist/
+.pypirc
