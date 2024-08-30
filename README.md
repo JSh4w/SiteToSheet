@@ -38,12 +38,20 @@ For a complete list of dependencies, see the `requirements.txt` file.
 
 ## Configuration
 
-1. Set up Google Cloud Project and enable necessary APIs (Sheets, Maps).
-2. Create and download a `credentials.json` file for Google API authentication.
-3. Create a `.env` file in the project root and add your API keys:
-## Usage
+1. Set up Google Cloud Project and enable necessary APIs (Sheets, Maps):
+   To do this follow the steps found here https://developers.google.com/sheets/api/quickstart/python#set-up-environment
+   Complete the steps up to but not including "Install the Google Client Library" 
+3. Create and download a `sheet_credentials.json` file for Google API authentication. It must be named sheet_credentials.
+   Unlike the tutorial store this in your LocalAppData/SiteToSheet folder. If this is not present the package will ask for its creation
+   Typically this resides at C:\Users\{user}\AppData\Local\SiteToSheet for Windows machines 
+5. Create a `.env` file in the project root alongside your `sheet_credentials.json` and add your API keys:
+![image](https://github.com/user-attachments/assets/6cc2695c-7f32-493d-a106-624d4bf7f815)
 
-An example on how to use the tool will be provided on my portfolio website. For now you just have to ask :)
+##Usage 
+
+Once all credentials are present you can begin filling in your Google spreadsheet with the data you wish to search
+
+#TODO include video of excel spreadsheet being filled in 
 
 ## Features
 
