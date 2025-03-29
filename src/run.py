@@ -6,9 +6,14 @@ It allows users to interact with the application by specifying various command-l
 import sys
 import argparse
 import pathlib
+import logging
 from SiteToSheet.config import load_configuration, CREDENTIALS_FILE, ENV_FILE, update_env_config
 from SiteToSheet.main import SiteToSheetProcessor
 from SiteToSheet.utils.shelf_functions import clear_shelf, print_shelf_data
+from SiteToSheet.utils.logging import setup_logger
+
+logger = logging.getlogger(__name__)
+
 def parse_arguments():
     """
     Parses the command line arguments and returns the parsed arguments.
@@ -45,6 +50,11 @@ def parse_arguments():
     # Add arguments for setting configuration values
     parser.add_argument("--set-google-api-key", type=str, help="Set Google API Key")
     parser.add_argument("--set-sheet-id", type=str, help="Set Google Sheet ID")
+    parser.add_argument("--log-level",
+                        choices=["DEBUG" ,"INFO", "WARNING", "ERROR", "CRITICAL"],
+                        default="INFO",
+                        help="Set the level of logging")
+    parser.add_argument("--log-file",type=str, help="Write logs to specified file")
     return parser.parse_args()
 
 def main():
@@ -67,6 +77,9 @@ def main():
     storage_dir = base_dir / 'local_storage' / 'link_data'
     # Parse arguments from Command line - see parse_arguments()
     args = parse_arguments()
+    # Setup logging config
+    log_level = getattr(logging, args.log_level)
+    setup_logger(name="SiteToSheet", level=log_level, log_file=args.log_file)
     # Clear shelf if --remove_shelf is provided, see utils/shelf_functions.py
     # This is done first as it exits the script
     if args.remove_shelf:
