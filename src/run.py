@@ -9,7 +9,7 @@ import pathlib
 import logging
 from SiteToSheet.config import load_configuration, CREDENTIALS_FILE, ENV_FILE, update_env_config
 from SiteToSheet.main import SiteToSheetProcessor
-from SiteToSheet.utils.shelf_functions import clear_shelf, print_shelf_data
+from SiteToSheet.utils.shelf_functions import clear_shelf, get_shelf_data
 from SiteToSheet.utils.logging import setup_logger
 from SiteToSheet.cli import parse_arguments
 
@@ -43,13 +43,13 @@ def main():
     # This is done first as it exits the script
     if args.remove_shelf:
         clear_shelf(storage_dir)
-        print("Cleared shelf, ending script")
+        logger.info("Cleared shelf, ending script")
         sys.exit(0)
     if args.print_shelf:
-        print_shelf_data(storage_dir, 'link_data')
-        print('\n')
-        print_shelf_data(storage_dir, 'auxilliary')
-        print("Printing shelf, ending script")
+        logger.info(get_shelf_data(storage_dir, 'link_data'))
+        logger.info('\n')
+        logger.info(get_shelf_data(storage_dir, 'auxilliary'))
+        logger.info("Printing shelf, ending script")
         sys.exit(0)
     # Load configuration file and update environment variables, taken from config.py
     load_configuration()
