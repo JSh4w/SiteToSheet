@@ -1,4 +1,3 @@
-
 [build-system]
 requires = ["setuptools>=45", "wheel"]
 build-backend = "setuptools.build_meta"
@@ -32,7 +31,7 @@ dev = ["twine"]
 homepage = "https://github.com/jonty/SiteToSheet"
 
 [project.scripts]
-sitetosheet = "run:main"
+sitetosheet = "SiteToSheet.cli:main"
 
 [tool.setuptools]
 package-dir = {"" = "src" }
