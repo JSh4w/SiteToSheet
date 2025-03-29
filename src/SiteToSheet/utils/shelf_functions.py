@@ -30,7 +30,7 @@ def get_shelf_data(path, key = 'link_data'):
     Returns:
         dict: The retrieved data.
     """
-    with shelve.open(path , 'c', writeback=True) as shelf:
+    with shelve.open(path, 'c', writeback=True) as shelf:
         retrieved_data = shelf.get(key, {})
         shelf.close()
     return retrieved_data
