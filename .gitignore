@@ -1,6 +1,7 @@
 **/__pycache/**
 *.pyc 
 venv/
-local_storage/
+**/local_storage/**
 dist/
 .pypirc
+*.egg-info/
