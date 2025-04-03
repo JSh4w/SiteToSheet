@@ -26,6 +26,7 @@ Notes:
 import os
 import pathlib
 import itertools
+import logging
 
 from .api_clients.google_maps_client import GoogleMapsClient
 from .api_clients.google_sheets_client import GoogleSheetsClient
@@ -37,9 +38,11 @@ from .utils.shelf_functions import (
     update_auxilliary_shelf
 )
 
+logger = logging.getLogger(__name__)
+
 class SiteToSheetProcessor:
     """
-    SiteToSheetProcessor class orchestrates the data extraction 
+    SiteToSheetProcessor class orchestrates the data extraction
     and storage process for the SiteToSheet application.
 
     Attributes:
@@ -76,7 +79,7 @@ class SiteToSheetProcessor:
         assert self.google_maps_api_key is not None, "Set the GOOGLE_API_KEY env var"
         assert self.google_sheets_id is not None, "Please set the SHEET_ID environment variable"
 
-    def initialize_clients(self, sheet_id = None , path_to_json_cred = None):
+    def initialize_clients(self, sheet_id=None, path_to_json_cred=None):
         """
         Initializes the GoogleSheetsClient and retrieves the Google Sheet.
 
@@ -89,11 +92,17 @@ class SiteToSheetProcessor:
         """
         if sheet_id is None:
             sheet_id = self.google_sheets_id
+            logger.debug("Sheet ID is : %s", sheet_id)
         if path_to_json_cred is None:
             path_to_json_cred = self.credentials_filepath
+            logger.debug("Path to json credentials is : %s", path_to_json_cred)
         self.gsheets_instance =\
             GoogleSheetsClient(sheet_id=sheet_id, path_to_json_cred=path_to_json_cred)
-        self.gsheets_instance.retrieve_google_sheet()
+        try:
+            self.gsheets_instance.retrieve_google_sheet()
+        except Exception as e:
+            logger.error("Failed to retrieve Google Sheet: %s", e)
+            raise
 
     def update_headers_and_destination_info(self, force_update: bool):
         """
@@ -122,10 +131,12 @@ class SiteToSheetProcessor:
                     get_shelf_data(self.storage_directory, "auxilliary")['Headers']
                 self.gsheets_instance.destination_info =\
                     get_shelf_data(self.storage_directory, "auxilliary")['Info']
+                logger.info("Using gsheets information from local storage")
             except KeyError:
                 self.gsheets_instance.gs_headers = self.gsheets_instance.extract_headers()
                 self.gsheets_instance.destination_info =\
                     self.gsheets_instance.extract_destination_info()
+                logger.info("Using information extracted from google sheets information")
         update_auxilliary_shelf(
             self.storage_directory,
             {"Headers":self.gsheets_instance.gs_headers}
@@ -165,6 +176,7 @@ class SiteToSheetProcessor:
             self.gmaps_instance = GoogleMapsClient(api_key=self.google_maps_api_key)
             headers = get_shelf_data(self.storage_directory, "auxilliary")['Headers']
             destination_info = get_shelf_data(self.storage_directory, "auxilliary")['Info']
+            logger.debug("%s\n%s", headers, destination_info)
 
             for i in self.links_to_search:
                 web_instance = WebDataHunter()
@@ -181,12 +193,12 @@ class SiteToSheetProcessor:
 
                 #Rate limiting applied to obtain_all_link_info method
                 web_info = web_instance.obtain_all_link_info(link, matches)
-
+                logger.debug("Web information: %s", web_info)
                 start = web_info['Location']
                 self.gmaps_instance.set_start(start)
 
                 #compares with googlesheets to only search if tenant info in the headers
-                print(f"Adding time to destination from {start} to {destination_matches}")
+                logger.info("Adding time to destination from %s to %s", start, destination_matches)
                 for i in destination_matches:
                     destination = destination_info[i]
                     time_to_destination = self.gmaps_instance.time_to_destination(destination)
@@ -194,7 +206,6 @@ class SiteToSheetProcessor:
 
                 self.gsheets_instance.update_links_info(web_info)
                 update_shelf(self.storage_directory, {link: web_info})
-
 
     def sync_sheets_with_local_data(self, sync_local_data: bool):
         """
@@ -207,10 +218,11 @@ class SiteToSheetProcessor:
             None
         """
         if sync_local_data:
-            #Limit of 50 sync sheets to prevent overloading google sheets
             set_limit = 50
+            logger.info("Limit of %s google sheets updates", set_limit)
             all_shelfed_data = get_shelf_data(self.storage_directory)
             for i in itertools.islice(self.stored_links, set_limit):
                 if i in all_shelfed_data:
                     gs_update_info = all_shelfed_data[i]
+                    logger.info("Updating links info with %s", gs_update_info)
                     self.gsheets_instance.update_links_info(gs_update_info)

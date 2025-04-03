@@ -1,23 +1,17 @@
-#!/usr/bin/env python3
 """
-This module provides a command-line interface for the SiteToSheet application.
-It allows users to interact with the application by specifying various command-line arguments.
+__main__ file to run SiteToSheet as a python package using "python -m SiteToSheet"
 """
-#import cProfile
-#profile = cProfile.Profile()
-#profile.enable()
 import sys
 import pathlib
 import logging
-from SiteToSheet.config import load_configuration, CREDENTIALS_FILE, ENV_FILE, update_env_config
-from SiteToSheet.main import SiteToSheetProcessor
-from SiteToSheet.utils.shelf_functions import clear_shelf, get_shelf_data
-from SiteToSheet.utils.logging import setup_logger
-from SiteToSheet.cli import parse_arguments
+from .config import load_configuration, CREDENTIALS_FILE, ENV_FILE, update_env_config
+from .main import SiteToSheetProcessor
+from .utils.shelf_functions import clear_shelf, get_shelf_data
+from .utils.logging import setup_logger
+from .cli import parse_arguments
 
 logger = logging.getLogger(__name__)
-#profile.disable()
-#profile.dump_stats("log.prof")
+
 
 def main():
     """
@@ -61,7 +55,7 @@ def main():
         logger.info("Updating GOOGLE_API_KEY at %s", ENV_FILE)
         update_env_config(path= ENV_FILE, key="GOOGLE_API_KEY", value=args.set_google_api_key)
     if args.set_sheet_id:
-        logger.info("Updating SHEET_ID at %s",ENV_FILE)
+        logger.info("Updating SHEET_ID at %s", ENV_FILE)
         update_env_config(path= ENV_FILE, key="SHEET_ID", value=args.set_sheet_id)
 
     site_to_sheet = SiteToSheetProcessor(storage_directory=storage_dir,
@@ -76,4 +70,4 @@ def main():
         )
 
 if __name__ == '__main__':
-    main()
+    sys.exit(main())
