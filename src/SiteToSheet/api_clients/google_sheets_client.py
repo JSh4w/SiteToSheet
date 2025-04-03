@@ -5,6 +5,7 @@ It includes a class called GoogleSheetsClient that provides
 methods for authenticating with Google Sheets and performing operations on sheets.
 """
 import gspread
+import logging 
 from google.oauth2.service_account import Credentials
 
 class GoogleSheetsClient:
@@ -26,11 +27,11 @@ class GoogleSheetsClient:
             None
         """
         self.sheet_id = sheet_id
-        self.sheet_idscopes= [
-            "https://www.googleapis.com/auth/spreadsheets"
+        self.sheet_idscopes = [
+            "https://www.googleapis.com/auth/spreadsheets"  # or use the read-only scope if you only need to read
         ]
         self.creds  =\
-            Credentials.from_service_account_file(path_to_json_cred, scopes=self.sheet_idscopes)
+            Credentials.from_service_account_file(filename = path_to_json_cred, scopes=self.sheet_idscopes)
         self._gs_headers = None
         self._destination_info = None
         self.gs_headers = None
@@ -88,6 +89,7 @@ class GoogleSheetsClient:
         headings=sheet.row_values(1)
         headings_dict={}
         for i,j in enumerate(headings):
+            logger
             headings_dict[str(j)]=i+1
         self.gs_headers=headings_dict
         return headings_dict
