@@ -3,8 +3,10 @@
 This module provides a command-line interface for the SiteToSheet application.
 It allows users to interact with the application by specifying various command-line arguments.
 """
+#import cProfile 
+#profile = cProfile.Profile()
+#profile.enable()
 import sys
-import argparse
 import pathlib
 import logging
 from SiteToSheet.config import load_configuration, CREDENTIALS_FILE, ENV_FILE, update_env_config
@@ -13,8 +15,9 @@ from SiteToSheet.utils.shelf_functions import clear_shelf, get_shelf_data
 from SiteToSheet.utils.logging import setup_logger
 from SiteToSheet.cli import parse_arguments
 
-logger = logging.getlogger(__name__)
-
+logger = logging.getLogger(__name__)
+#profile.disable()
+#profile.dump_stats("log.prof")
 
 def main():
     """
@@ -37,8 +40,8 @@ def main():
     # Parse arguments from Command line - see parse_arguments()
     args = parse_arguments()
     # Setup logging config
-    log_level = getattr(logging, args.log_level)
-    setup_logger(name="SiteToSheet", level=log_level, log_file=args.log_file)
+    log_level = getattr(logging, args.log_level.upper(), logging.INFO)
+    logger = setup_logger(name="SiteToSheet", level=log_level, log_file=args.log_file)
     # Clear shelf if --remove_shelf is provided, see utils/shelf_functions.py
     # This is done first as it exits the script
     if args.remove_shelf:
@@ -55,10 +58,11 @@ def main():
     load_configuration()
     # Update environment variables if --set-google-api-key or --set-sheet-id is provided
     if args.set_google_api_key:
+        logger.info(f"Updating GOOGLE_API_KEY at {ENV_FILE}")
         update_env_config(path= ENV_FILE, key="GOOGLE_API_KEY", value=args.set_google_api_key)
     if args.set_sheet_id:
+        logger.info(f"Updating SHEET_ID at {ENV_FILE}")
         update_env_config(path= ENV_FILE, key="SHEET_ID", value=args.set_sheet_id)
-
 
     site_to_sheet = SiteToSheetProcessor(storage_directory=storage_dir,
                                           credentials_filepath=CREDENTIALS_FILE)
