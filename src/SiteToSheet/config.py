@@ -142,14 +142,14 @@ def load_configuration():
 
     if not ENV_FILE.exists():
         create_template_env()
-        logger.info(f"Created template .env file at {ENV_FILE}")
+        logger.info("Created template .env file at %s", ENV_FILE)
         logger.info("Please edit this file and add your actual API keys and settings.")
     else:
         load_dotenv(ENV_FILE)
 
     if not CREDENTIALS_FILE.exists():
         create_template_credentials()
-        logger.info(f"Created template credentials file at {CREDENTIALS_FILE}")
+        logger.info("Created template credentials file at %s", CREDENTIALS_FILE)
         logger.info("Please replace the placeholder values with your actual Google Sheets credentials.")
 
     # Verify that required environment variables are set
@@ -157,8 +157,11 @@ def load_configuration():
     missing_vars = [var for var in required_vars if not os.getenv(var)]
 
     if missing_vars:
-        logger.warning(f"The following required environment variables are not set: {', '.join(missing_vars)}")
-        logger.debug(f"Current vars: {[(var, os.getenv(var)) for var in required_vars]}")
-        logger.info(f"Please edit the .env file at {ENV_FILE} and add these variables.")
+        logger.warning(
+            "The following required environment variables are not set: %s", 
+            ', '.join(missing_vars)
+        )
+        logger.debug("Current vars: %s", [(var, os.getenv(var)) for var in required_vars])
+        logger.info("Please edit the .env file at %s and add these variables.", ENV_FILE)
 
     return {var: os.getenv(var) for var in required_vars}

@@ -10,6 +10,7 @@ import requests
 from bs4 import BeautifulSoup
 
 # Global variables to track if NLP modules are loaded
+# NOTE : Might want to change this in future
 _nlp = None
 _spacy_loaded = False
 
@@ -32,14 +33,14 @@ class WebDataHunter:
     def __init__(self):
         """
         Initializes a WebDataHunter instance with default HTTP headers.
-        
-        The headers are set to mimic a Chrome browser on a Macintosh system, 
-        which helps to avoid being blocked by websites that do not allow 
+
+        The headers are set to mimic a Chrome browser on a Macintosh system,
+        which helps to avoid being blocked by websites that do not allow
         scraping by default User-Agent headers.
-        
+
         Parameters:
         None
-        
+
         Returns:
         None
         """
@@ -51,16 +52,16 @@ class WebDataHunter:
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,"
                       "image/webp,image/apng,*/*;q=0.8"
         }
-        
+
     def _load_nlp(self):
         """
         Lazily loads the spaCy NLP model only when needed.
-        
+
         Returns:
             The loaded NLP model
         """
         global _nlp, _spacy_loaded
-        
+
         if not _spacy_loaded:
             start_time = time.time()
             logger.info("Loading spaCy NLP model...")
@@ -72,9 +73,9 @@ class WebDataHunter:
             except ImportError:
                 logger.error("spaCy is not installed. NLP features will not be available.")
                 _spacy_loaded = False
-        
+
         return _nlp
-        
+
     def is_regex(self,pattern):
         """
         Checks if a given pattern is a regular expression.
@@ -105,11 +106,11 @@ class WebDataHunter:
     @staticmethod
     def daily_limit(max_daily):
         """
-        A decorator that limits the number of times a function can 
+        A decorator that limits the number of times a function can
         be called within a 24-hour period.
 
         Parameters:
-        max_daily (int): The maximum number of times the 
+        max_daily (int): The maximum number of times the
         function can be called within a 24-hour period.
 
         Returns:
@@ -155,7 +156,7 @@ class WebDataHunter:
     #NLP process returns lists of list (text and the corresponding label)
     def nlp_process(self, text, labels) ->list:
         """
-        Performs Natural Language Processing (NLP) on the given text to extract entities 
+        Performs Natural Language Processing (NLP) on the given text to extract entities
         that match the specified labels.
 
         Args:
@@ -169,7 +170,7 @@ class WebDataHunter:
         if not nlp:
             logger.warning("NLP model not available. Returning empty matches.")
             return []
-            
+
         doc = nlp(text)
         matches=[]
         for ent in doc.ents:
@@ -188,7 +189,7 @@ class WebDataHunter:
             match (str): The match criteria, which can be a string or a regular expression.
 
         Returns:
-            str: The matched text if found, 
+            str: The matched text if found,
             otherwise an error message or the result of NLP processing.
         """
         if "(£)" in match or "Price" in match:
@@ -208,12 +209,12 @@ class WebDataHunter:
             uk_postcode_pattern =\
                 r'\b([A-Z]{1,2}[0-9R][0-9A-Z]? ?[0-9][A-Z]{2}|[A-Z]{1,2}[0-9R][0-9A-Z]?)\b'
             postcodes = re.findall(uk_postcode_pattern, text)
-            
+
             nlp = self._load_nlp()
             if not nlp:
                 logger.warning("NLP model not available. Returning postcodes only.")
                 return " ".join(postcodes) if postcodes else "No location found"
-                
+
             doc = nlp(text)
             locations = []
             for ent in doc.ents:
@@ -243,28 +244,27 @@ class WebDataHunter:
             successful_match = all_matches[0]
             return successful_match[0]
         #For handling nlp if required
-        else:
-            nlp = self._load_nlp()
-            if not nlp:
-                logger.warning("NLP model not available. Returning 'No match found'.")
-                return "No match found"
-                
-            doc = nlp(text)
-            #see page 21 for entity types
-            #https://catalog.ldc.upenn.edu/docs/LDC2013T19/OntoNotes-Release-5.0.pdf
-            #ent references entity within the doc
-            for ent in doc.ents:
-                if match.upper() in ent.label_:
-                    return ent.text
+        nlp = self._load_nlp()
+        if not nlp:
+            logger.warning("NLP model not available. Returning 'No match found'.")
             return "No match found"
+
+        doc = nlp(text)
+        #see page 21 for entity types
+        #https://catalog.ldc.upenn.edu/docs/LDC2013T19/OntoNotes-Release-5.0.pdf
+        #ent references entity within the doc
+        for ent in doc.ents:
+            if match.upper() in ent.label_:
+                return ent.text
+        return "No match found"
 
     def html_parser(self, url : str) -> str :
         """
         This function parses the HTML content of a given URL and returns the text content.
-        
+
         Parameters:
             url (str): The URL of the webpage to be parsed.
-        
+
         Returns:
             str: The text content of the webpage.
         """

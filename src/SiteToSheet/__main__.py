@@ -52,10 +52,10 @@ def main():
     load_configuration()
     # Update environment variables if --set-google-api-key or --set-sheet-id is provided
     if args.set_google_api_key:
-        logger.info(f"Updating GOOGLE_API_KEY at {ENV_FILE}")
+        logger.info("Updating GOOGLE_API_KEY at %s", ENV_FILE)
         update_env_config(path= ENV_FILE, key="GOOGLE_API_KEY", value=args.set_google_api_key)
     if args.set_sheet_id:
-        logger.info(f"Updating SHEET_ID at {ENV_FILE}")
+        logger.info("Updating SHEET_ID at %s", ENV_FILE)
         update_env_config(path= ENV_FILE, key="SHEET_ID", value=args.set_sheet_id)
 
     site_to_sheet = SiteToSheetProcessor(storage_directory=storage_dir,
