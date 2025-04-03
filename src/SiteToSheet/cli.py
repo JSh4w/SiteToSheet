@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 This module provides a command-line interface for the SiteToSheet application.
 It allows users to interact with the application by specifying various command-line arguments.
