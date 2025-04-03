@@ -7,7 +7,11 @@ This module provides functions for managing the configuration of the SiteToSheet
 import os
 from pathlib import Path
 import json
+import logging
 from dotenv import load_dotenv, set_key
+
+# Get logger for this module
+logger = logging.getLogger(__name__)
 
 def get_config_dir():
     """
@@ -42,7 +46,8 @@ def create_template_env():
     Returns:
     None
     """
-    template = """GOOGLE_API_KEY=SHEET_ID="""
+    template = """GOOGLE_API_KEY=
+SHEET_ID="""
     with open(ENV_FILE, 'w', encoding="UTF-8") as f:
         f.write(template.strip())
 
@@ -137,23 +142,23 @@ def load_configuration():
 
     if not ENV_FILE.exists():
         create_template_env()
-        print(f"Created template .env file at {ENV_FILE}")
-        print("Please edit this file and add your actual API keys and settings.")
+        logger.info(f"Created template .env file at {ENV_FILE}")
+        logger.info("Please edit this file and add your actual API keys and settings.")
     else:
         load_dotenv(ENV_FILE)
 
     if not CREDENTIALS_FILE.exists():
         create_template_credentials()
-        print(f"Created template credentials file at {CREDENTIALS_FILE}")
-        print("Please replace the placeholder values with your actual Google Sheets credentials.")
+        logger.info(f"Created template credentials file at {CREDENTIALS_FILE}")
+        logger.info("Please replace the placeholder values with your actual Google Sheets credentials.")
 
     # Verify that required environment variables are set
     required_vars = ['GOOGLE_API_KEY', 'SHEET_ID']
     missing_vars = [var for var in required_vars if not os.getenv(var)]
 
     if missing_vars:
-        print(f"""Warning: The following required
-            environment variables are not set: {', '.join(missing_vars)}""")
-        print(f"Please edit the .env file at {ENV_FILE} and add these variables.")
+        logger.warning(f"The following required environment variables are not set: {', '.join(missing_vars)}")
+        logger.debug(f"Current vars: {[(var, os.getenv(var)) for var in required_vars]}")
+        logger.info(f"Please edit the .env file at {ENV_FILE} and add these variables.")
 
     return {var: os.getenv(var) for var in required_vars}
