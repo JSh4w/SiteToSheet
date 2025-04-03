@@ -28,3 +28,19 @@ def setup_logger(name: str, level: int = logging.INFO,
     
     logger.setLevel(level)
     return logger
+
+
+def log_function_call(func):
+    "Decorator to log function calls"
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        logger.info(f"Calling function '{func.__name__} with args {args} and kweyword arguments {kwargs}")
+        try:
+            result = func(*args, **kwargs)
+            logger.info(f"{func.__name__} returned : {result}")
+            return result
+        except Exception as e:
+            logging.error(f"Function {func.__name__} raised an exception: {e}")
+            raise
+    return wrapper 
+
